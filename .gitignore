@@ -1,0 +1,10 @@
+node_modules
+dist
+.tmp
+.sass-cache
+public/bower_components
+public/node_modules
+public/build
+public/dist
+public/npm-debug.log
+app.js
