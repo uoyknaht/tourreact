@@ -7,4 +7,4 @@ public/node_modules
 public/build
 public/dist
 public/npm-debug.log
-app.js
+/app.js

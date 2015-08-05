@@ -1,6 +1,6 @@
 import React from 'react';
 import SearchBar from './searchBar';
-import Places from './placeForm';
+import PlaceForm from './placeForm';
 
 export default class Sidebar extends React.Component {
 
