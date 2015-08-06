@@ -1,8 +1,7 @@
 import React from 'react';
 import SearchBar from './searchBar';
-import PlaceForm from './placeForm';
 
-export default class Sidebar extends React.Component {
+export default class AllPlaces extends React.Component {
 
     constructor() {
         super();
@@ -10,6 +9,7 @@ export default class Sidebar extends React.Component {
     }
 
     render() {
+
         var places = [];
 
         this.props.places.forEach(function (place) {
@@ -25,24 +25,11 @@ export default class Sidebar extends React.Component {
                 );
             }
 
-
-        }.bind(this));
-
-        // var places = this.props.places.map(function (place) {
-        //     return (
-        //         <a className="collection-item avatar">
-        //             <img src="src/img/alert-info.png" />a
-        //             {place.title}
-        //         </a>
-        //     );
-        // });        
-
+        }.bind(this)); 
 
         return (
             <div>
-
                 <SearchBar filterText={this.props.filterText} onUserInput={this.props.onUserInput} />
-
 
                 <ul className="collection">
                     {places}
@@ -50,7 +37,6 @@ export default class Sidebar extends React.Component {
                 <br/>
                 <hr/>
                 <br/>
-                <PlaceForm onPlaceSubmit={this.props.onPlaceSubmit} />
             </div>
         );
     }

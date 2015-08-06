@@ -1,8 +1,9 @@
 import $ from 'jQuery';
 import React from 'react';
-import Sidebar from './sidebar';
+import Router from 'react-router';  
+import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 
-export default class App extends React.Component {
+export default class Home extends React.Component {
 
     constructor() {
         super();
@@ -44,13 +45,6 @@ export default class App extends React.Component {
         });
     }
 
-    // getInitialState() {
-    //     return {
-    //         places: [],
-    //         filterText: ''
-    //     };
-    // }
-
     componentDidMount() {
         var getPlacesUrl = 'api/places';
 
@@ -69,16 +63,18 @@ export default class App extends React.Component {
     render() {
         return (
             <div>
-                  <div class="header">
-                    <ul class="nav nav-pills pull-right">
-                      <li ui-sref-active="active"><a data-ui-sref="home">Home</a></li>
-                      <li ui-sref-active="active"><a data-ui-sref="places.list">All places</a></li>
-                    </ul>
-                  </div>
+                <div class="header">
+                    <Link to="home">Home</Link>
+                    <Link to="allPlaces">All places</Link>
+                    <Link to="addPlace">Add place</Link>
+                </div>
            
                 <div className="row">
                     <div className="col s6">
-                        <Sidebar places={this.state.places} onPlaceSubmit={this.handlePlaceSubmit} filterText={this.state.filterText} onUserInput={this.handleUserInput} />
+                        <RouteHandler places={this.state.places} 
+                                        onPlaceSubmit={this.handlePlaceSubmit} 
+                                        filterText={this.state.filterText} 
+                                        onUserInput={this.handleUserInput} />
                     </div>
                     <div class="col s6">
                         Map2
