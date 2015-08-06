@@ -1,0 +1,8 @@
+.dynamic-menu {
+    position: absolute;
+    left: 0;
+    top: 100px;
+    background: #eee;
+    border: 1px solid #ccc;
+    padding: 20px;
+}

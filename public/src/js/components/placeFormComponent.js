@@ -34,47 +34,49 @@ export default class PlaceForm extends React.Component {
     render() {
 
         return (
-            <div className="row">
-                <form className="placeForm" class="col s12">
-                    <h2>Add new place</h2>
-                    <div className="row">
-                        <div class="input-field col s12">
-                            <input type="text"  ref="title" id="place-form-title" placeholder="Title" className="validate" />
-                            <label for="place-form-title">Title</label>
+            <div className="dynamic-menu">
+                <div className="row">
+                    <form className="placeForm" class="col s12">
+                        <h2>Add new place</h2>
+                        <div className="row">
+                            <div class="input-field col s12">
+                                <input type="text"  ref="title" id="place-form-title" placeholder="Title" className="validate" />
+                                <label for="place-form-title">Title</label>
+                            </div>
                         </div>
-                    </div>
-                    <div className="row">
-                        <div class="input-field col s12">
-                            <input type="text" ref="address" />
-                            <label>Address</label>
+                        <div className="row">
+                            <div class="input-field col s12">
+                                <input type="text" ref="address" />
+                                <label>Address</label>
+                            </div>
                         </div>
-                    </div>
-                    <div className="row">
-                        <div class="input-field col s12">
-                            <input type="text"  ref="latitude" />
-                            <label>Latitude</label>
+                        <div className="row">
+                            <div class="input-field col s12">
+                                <input type="text"  ref="latitude" />
+                                <label>Latitude</label>
+                            </div>
                         </div>
-                    </div>
-                    <div className="row">
-                        <div class="input-field col s12">
-                            <input type="text"  ref="longitude" />
-                            <label>Longitude</label>
+                        <div className="row">
+                            <div class="input-field col s12">
+                                <input type="text"  ref="longitude" />
+                                <label>Longitude</label>
+                            </div>
                         </div>
-                    </div>
 
 
 
-                    <br/>
-                    <br/>
-                    <br/>
-                    <div className="row">
-                        <div class="input-field col s12">
-                            <input type="button" className="waves-effect waves-light btn" type="submit" value="Save" onClick={this.handleSubmit} />
-                            <a className="waves-effect waves-light btn">Cancel</a>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <div className="row">
+                            <div class="input-field col s12">
+                                <input type="button" className="waves-effect waves-light btn" type="submit" value="Save" onClick={this.handleSubmit} />
+                                <a className="waves-effect waves-light btn">Cancel</a>
+                            </div>
                         </div>
-                    </div>
 
-                </form>
+                    </form>
+                </div>
             </div>
         );
     }

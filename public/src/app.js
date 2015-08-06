@@ -34,8 +34,10 @@ import PlaceForm from './js/components/placeFormComponent';
     var routes = (  
         <Route name="home" path="/" handler={Home}>
 
-            <Route name="allPlaces" path="places" handler={AllPlaces}/>
-            <Route name="addPlace" path="add-place" handler={PlaceForm}/>
+            <Route name="allPlaces" path="places" handler={AllPlaces}>
+                <Route name="addPlace" path="new" handler={PlaceForm}/>
+            </Route>
+            
 
         </Route>
     );   

@@ -1,4 +1,6 @@
 import React from 'react';
+import Router from 'react-router';  
+import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import SearchBar from './searchBar';
 
 export default class AllPlaces extends React.Component {
@@ -37,6 +39,9 @@ export default class AllPlaces extends React.Component {
                 <br/>
                 <hr/>
                 <br/>
+
+                <RouteHandler onPlaceSubmit={this.props.onPlaceSubmit}  />
+
             </div>
         );
     }
