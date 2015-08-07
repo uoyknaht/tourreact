@@ -42,7 +42,7 @@ export default class PlaceForm extends React.Component {
 
     render() {
 
-        var title = this.props.isEditAction ? 'Add new place' ? 'Edit place';
+        var title = this.props.isEditAction ? 'Add new place' : 'Edit place';
 
         return (
             <div className="dynamic-menu">

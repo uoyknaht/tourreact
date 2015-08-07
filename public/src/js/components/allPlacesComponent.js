@@ -20,9 +20,7 @@ export default class AllPlaces extends React.Component {
                 places.push(
                     <li className="collection-item avatar">
                         <img src="src/img/alert-info.png" className="circle" />
-                        <a className="title">
-                            {place.title}
-                        </a>
+                        <Link className="title" to="viewPlace" params={{placeId: place.Id}}>{place.title}</Link>
                     </li>
                 );
             }

@@ -18,10 +18,9 @@ export default class Home extends React.Component {
         };
     }
 
-    handlePlaceSubmit(place) {
+    handlePlaceSubmit(place, isEditAction) {
         var savePlaceUrl = 'api/places';
-        var _this = this;
-
+        var methodType = isEditAction ? 'PUT' : 'POST';
 
         $.ajax({
             method: 'POST',

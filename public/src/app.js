@@ -4,6 +4,7 @@ import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import Home from './js/components/homeComponent';
 import AllPlaces from './js/components/allPlacesComponent';
 import PlaceForm from './js/components/placeFormComponent';
+import ViewPlace from './js/components/viewPlaceComponent';
 
 (function () {
 
@@ -36,6 +37,7 @@ import PlaceForm from './js/components/placeFormComponent';
 
             <Route name="allPlaces" path="places" handler={AllPlaces}>
                 <Route name="addPlace" path="new" handler={PlaceForm}/>
+                <Route name="viewPlace" path=":placeId" handler={ViewPlace}/>
             </Route>
             
 
