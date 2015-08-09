@@ -7,6 +7,7 @@ export default class ViewPlace extends React.Component {
 
     constructor(props, context) {
         super(props);
+        this.context = context;
         this.render = this.render.bind(this);
         this.getPlace = this.getPlace.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
@@ -16,8 +17,6 @@ export default class ViewPlace extends React.Component {
                 _id: 'somethingForNow'
             }
         };    
-
-        this.context = context;
     }
 
     componentDidMount() {

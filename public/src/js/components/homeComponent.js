@@ -19,22 +19,26 @@ export default class Home extends React.Component {
     }
 
     handlePlaceSubmit(place, isEditAction) {
-        var savePlaceUrl = 'api/places';
-        var methodType = isEditAction ? 'PUT' : 'POST';
+        var places = this.state.places;
 
-        $.ajax({
-            method: 'POST',
-            data: place,
-            url: savePlaceUrl,
-            success: function(addedPlace) {
-                var places = this.state.places;
-                places.push(addedPlace);
-                this.setState({places: places});
-            }.bind(this),
-            error: function(xhr, status, err) {
-                console.error(savePlaceUrl, status, err.toString());
-            }.bind(this)
-        });
+        if (!isEditAction) {
+            places.push(place);
+        } else {
+
+            var oldPlace = null;
+
+            places.every(function (_place, index) {
+                if (_place._id === place._id) {
+                    places[index] = place;
+                    console.log(index);
+                    return false;
+                }
+            })
+        }
+
+
+        
+        this.setState({places: places});
     }
 
     handleUserInput(filterText) {
