@@ -37,9 +37,9 @@ import ViewPlace from './js/components/viewPlaceComponent';
 
             <Route name="allPlaces" path="places" handler={AllPlaces}>
                 <Route name="addPlace" path="new" handler={PlaceForm}/>
+                <Route name="editPlace" path=":placeId/edit" handler={PlaceForm}/>
                 <Route name="viewPlace" path=":placeId" handler={ViewPlace}/>
             </Route>
-            
 
         </Route>
     );   

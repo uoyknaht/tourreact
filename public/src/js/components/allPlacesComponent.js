@@ -15,12 +15,12 @@ export default class AllPlaces extends React.Component {
         var places = [];
 
         this.props.places.forEach(function (place) {
-
             if (place.title.indexOf(this.props.filterText) !== -1) {
                 places.push(
                     <li className="collection-item avatar">
                         <img src="src/img/alert-info.png" className="circle" />
-                        <Link className="title" to="viewPlace" params={{placeId: place.Id}}>{place.title}</Link>
+                        
+                        <Link className="title" to="viewPlace" params={{placeId: place._id}}>{place.title}</Link>
                     </li>
                 );
             }
