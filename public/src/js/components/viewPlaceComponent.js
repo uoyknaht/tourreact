@@ -2,6 +2,7 @@ import $ from 'jQuery';
 import React from 'react';
 import Router from 'react-router';  
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
+import PlaceViewService from '../services/placeViewService';
 
 export default class ViewPlace extends React.Component {
 
@@ -10,6 +11,8 @@ export default class ViewPlace extends React.Component {
         this.context = context;
         this.render = this.render.bind(this);
         this.getPlace = this.getPlace.bind(this);
+        this.deletePlace = this.deletePlace.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
 
         this.state = {
@@ -39,17 +42,41 @@ export default class ViewPlace extends React.Component {
         });
     } 
 
+    deletePlace(placeId, callback) {
+        $.ajax({
+            method: 'DELETE',
+            url: 'api/places/' + placeId,
+            success: function() {
+                callback();
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error('errrrrrrrrrr');
+            }.bind(this)
+        });        
+    }
+
+    handleDelete() {
+        var placeId = this.state.place._id;
+        this.deletePlace(placeId, function () {
+            console.log('deleted');
+
+            PlaceViewService.remove(placeId);
+        });
+    }
+
     render() {
 
         var place = this.state.place;
 
         return (
-            <div className="dynamic-menu">
+            <div className="dynamic-menu" key={place}>
                 <div className="row">
                     <div className="col12">
                         <h2>{place.title}</h2>
                       
                         <Link to="editPlace" params={{placeId: place._id}}>Edit</Link>
+                        &nbsp;
+                        <a href="#" onClick={this.handleDelete}>Delete</a>
                         
 
                         <br/>

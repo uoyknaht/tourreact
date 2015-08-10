@@ -11,7 +11,7 @@ export default class AllPlaces extends React.Component {
     }
 
     render() {
-
+        console.log('loading all places');
         var places = [];
 
         this.props.places.forEach(function (place) {

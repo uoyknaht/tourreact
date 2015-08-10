@@ -41,6 +41,7 @@
     "materialize": "^1.0.0",
     "mongoose": "^4.0.6",
     "react": "^0.13.3",
+    "react-addons": "^0.9.0",
     "react-router": "^0.13.3",
     "vinyl-source-stream": "^1.1.0"
   }

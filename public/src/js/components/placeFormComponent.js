@@ -37,6 +37,8 @@ export default class PlaceForm extends React.Component {
                 React.findDOMNode(_this.refs.longitude).value = place.longitude;                
             });            
         }
+
+
     }    
 
     handleChange(e, a) {
@@ -99,7 +101,6 @@ export default class PlaceForm extends React.Component {
 
 
         this.savePlace(data, function (place) {
-console.log(_this.isEditAction);
             _this.props.onPlaceSubmit(data, _this.isEditAction);
 
             if (!this.isEditAction) {
@@ -122,7 +123,7 @@ console.log(_this.isEditAction);
 
     render() {
 
-        var title = this.props.isEditAction ? 'Add new place' : 'Edit place';
+        var title = this.isEditAction ?'Edit place' : 'Add new place';
         var place = this.state.place;
 
         return (
