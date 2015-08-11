@@ -13,6 +13,8 @@ export default class ViewPlace extends React.Component {
         this.getPlace = this.getPlace.bind(this);
         this.deletePlace = this.deletePlace.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleBackToAllPlaces = this.handleBackToAllPlaces.bind(this);
+        this.redirectToAllPlaces = this.redirectToAllPlacesView.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
 
         this.state = {
@@ -57,11 +59,30 @@ export default class ViewPlace extends React.Component {
 
     handleDelete() {
         var placeId = this.state.place._id;
-        this.deletePlace(placeId, function () {
-            console.log('deleted');
+        this.deletePlace(placeId, () => {
+            var places = this.props.places;
 
-            PlaceViewService.remove(placeId);
+            var placeViewService = new PlaceViewService();
+            placeViewService.remove(places, placeId);
+
+            this.setState({
+                places: places
+            });
+
+            console.log('deleted');
+            this.redirectToAllPlacesView();
         });
+
+        return false;
+    }
+
+    handleBackToAllPlaces(e) {
+        e.preventDefault();
+        this.redirectToAllPlacesView();
+    }
+
+    redirectToAllPlacesView() {
+        this.context.router.transitionTo('allPlaces');
     }
 
     render() {
@@ -93,6 +114,14 @@ export default class ViewPlace extends React.Component {
                                 category.title
                             </span>
                         </p>*/}
+
+                        <br/>
+                        <br/>
+                        <div className="row">
+                            <div class="input-field col s12">
+                                <button type="button" className="waves-effect waves-light btn" onClick={this.handleBackToAllPlaces}>Back to all places</button>
+                            </div>
+                        </div>
 
 
                     </div>

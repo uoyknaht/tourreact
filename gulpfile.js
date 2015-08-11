@@ -42,7 +42,7 @@ var browserSync = require('browser-sync').create();
 /////
 
 var vendors = [
-  'react',
+  'react/addons',
   //'bootstrap',
   'jquery',
   'materialize'
