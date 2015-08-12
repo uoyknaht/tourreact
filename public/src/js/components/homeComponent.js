@@ -2,12 +2,14 @@ import $ from 'jQuery';
 import React from 'react';
 import Router from 'react-router';  
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
+import PlaceViewService from '../services/placeViewService';
 
 export default class Home extends React.Component {
 
     constructor() {
         super();
         this.handlePlaceSubmit = this.handlePlaceSubmit.bind(this);
+        this.handleDeletePlace = this.handleDeletePlace.bind(this);
         this.handleUserInput = this.handleUserInput.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.render = this.render.bind(this);
@@ -36,9 +38,32 @@ export default class Home extends React.Component {
             })
         }
 
-
-        
         this.setState({places: places});
+    }
+
+    handleDeletePlace(placeId, callback) {
+
+        $.ajax({
+            method: 'DELETE',
+            url: 'api/places/' + placeId,
+            success: function() {
+
+                var places = this.state.places;
+
+                var placeViewService = new PlaceViewService();
+                placeViewService.remove(places, placeId);
+
+                this.setState({
+                    places: places
+                });
+
+                console.log('deleted');
+                callback();
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error('errrrrrrrrrr');
+            }.bind(this)
+        });        
     }
 
     handleUserInput(filterText) {
@@ -76,6 +101,7 @@ export default class Home extends React.Component {
                     <div className="col s6">
                         <RouteHandler places={this.state.places} 
                                         onPlaceSubmit={this.handlePlaceSubmit} 
+                                        onPlaceDelete={this.handleDeletePlace}
                                         filterText={this.state.filterText} 
                                         onUserInput={this.handleUserInput} />
                     </div>

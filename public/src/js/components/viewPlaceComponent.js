@@ -2,7 +2,6 @@ import $ from 'jQuery';
 import React from 'react';
 import Router from 'react-router';  
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
-import PlaceViewService from '../services/placeViewService';
 
 export default class ViewPlace extends React.Component {
 
@@ -11,7 +10,6 @@ export default class ViewPlace extends React.Component {
         this.context = context;
         this.render = this.render.bind(this);
         this.getPlace = this.getPlace.bind(this);
-        this.deletePlace = this.deletePlace.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleBackToAllPlaces = this.handleBackToAllPlaces.bind(this);
         this.redirectToAllPlaces = this.redirectToAllPlacesView.bind(this);
@@ -44,32 +42,10 @@ export default class ViewPlace extends React.Component {
         });
     } 
 
-    deletePlace(placeId, callback) {
-        $.ajax({
-            method: 'DELETE',
-            url: 'api/places/' + placeId,
-            success: function() {
-                callback();
-            }.bind(this),
-            error: function(xhr, status, err) {
-                console.error('errrrrrrrrrr');
-            }.bind(this)
-        });        
-    }
-
     handleDelete() {
         var placeId = this.state.place._id;
-        this.deletePlace(placeId, () => {
-            var places = this.props.places;
 
-            var placeViewService = new PlaceViewService();
-            placeViewService.remove(places, placeId);
-
-            this.setState({
-                places: places
-            });
-
-            console.log('deleted');
+        this.props.onPlaceDelete(placeId, () => {
             this.redirectToAllPlacesView();
         });
 

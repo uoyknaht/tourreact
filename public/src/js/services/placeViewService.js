@@ -2,17 +2,15 @@
 export default class PlaceViewService {
 
     remove(places, placeId) {
-        var index = null;
 
-        places.every(function (place, i) {
+        places.some(function (place, index) {
+
             if (place._id === placeId) {
-                index = i;
-                return false;
+                places.splice(index, 1);
+                return true;
             }
-        });
 
-        if (index) {
-            places.splice(index, 1);
-        }
+            return false;
+        });
     }
 }
