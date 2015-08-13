@@ -10,26 +10,27 @@ import ViewPlace from './js/components/viewPlaceComponent';
 
     'use strict';
 
-    // React.render(
-    //   <App />,
-    //   document.body
-    // );
 
-    // var routes = (  
-    //   <Route name="app" path="/" handler={Home}>
-    //     <Route name="allPlaces" path="/all-places" handler={Labas}/>
-    //     <Route name="addPlace" path="/add-place" handler={Hello}/>
-    //   </Route>
-    // );
-
-    // var SidebarWrap = React.createClass({
-    //   render: function () {
-    //     return (
-    //         <Sidebar places={this.state.places} onPlaceSubmit={this.handlePlaceSubmit} filterText={this.state.filterText} onUserInput={this.handleUserInput} />
-    //     );
-    //   }
-    // });
-
+    // class Wrapper extends React.Component {
+    //     constructor(props) {
+    //         super(props);
+    //         this.state = { handler: null };
+    //     }
+    //     componentDidMount() {
+    //         Router.run(routes, this.handleNavigation.bind(this));
+    //     }
+    //     handleNavigation(Handler, state) {
+    //         this.setState({
+    //             handler: Handler
+    //         });
+    //     }
+    //     render() {
+    //         if(!this.state.handler) return null;
+            
+    //         var Handler = this.state.handler;
+    //         return <Handler/>;
+    //     }
+    // }
 
 
     var routes = (  
@@ -44,28 +45,14 @@ import ViewPlace from './js/components/viewPlaceComponent';
         </Route>
     );   
 
-    //      var routes = (  
-    //     <Route name="home" path="/" handler={Home}>
-
-    //         <Route name="allPlaces" handler={AllPlaces}>
-    //             <Route name="message" path="all-places" handler={Sidebar}/>
-    //             <DefaultRoute handler={Sidebar}/>
-    //         </Route>
-
-    //         <Route name="addPlace" path="add-place" handler={PlaceForm}/>
-    //         <DefaultRoute handler={PlaceForm}/>
-
-    //     </Route>
-    // ); 
-
-    // Router.run(routes, function (Handler) {  
-    //   React.render(<Handler/>, document.body);
-    // });    
+ 
 
     Router.run(routes, function (Handler, state) {
         var params = state.params;
         React.render(<Handler params={params}/>, document.body);
     });    
+
+    // React.render(<Wrapper/>, document.body);
 
 })();
 

@@ -42,10 +42,11 @@ var browserSync = require('browser-sync').create();
 /////
 
 var vendors = [
-  'react/addons',
+  'react',
   //'bootstrap',
   'jquery',
-  'materialize'
+  'materialize',
+  'material-ui'
 ];
 
 // gulp.task('vendors', function () {

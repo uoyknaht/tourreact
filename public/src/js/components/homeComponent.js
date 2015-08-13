@@ -2,7 +2,19 @@ import $ from 'jQuery';
 import React from 'react';
 import Router from 'react-router';  
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
+import mui from 'material-ui';
+let AppBar = mui.AppBar;
+let IconButton = mui.IconButton;
+let FlatButton = mui.FlatButton;
+let NavigationClose = mui.NavigationClose;
+// import { RaisedButton } from 'material-ui';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 import PlaceViewService from '../services/placeViewService';
+
+let ThemeManager = new mui.Styles.ThemeManager();
+console.log(ThemeManager);
+console.log(mui);
+//import ThemeManager from 'material-ui/lib/styles/theme-manager';
 
 export default class Home extends React.Component {
 
@@ -18,6 +30,11 @@ export default class Home extends React.Component {
             places: [],
             filterText: ''
         };
+
+        injectTapEventPlugin();
+
+        // this.themeManager = new mui.Styles.ThemeManager();
+        //this.themeManager = new ThemeManager();
     }
 
     handlePlaceSubmit(place, isEditAction) {
@@ -88,14 +105,30 @@ export default class Home extends React.Component {
         });
     }
 
+    getChildContext() {
+        return {
+            muiTheme: ThemeManager.getCurrentTheme()
+            // muiTheme: this.themeManager.getCurrentTheme()
+        };
+    }
+
     render() {
         return (
             <div>
+
+                <AppBar
+                  title="TourReact"
+                  iconElementLeft={<IconButton>></IconButton>}
+                  iconElementRight={<FlatButton label="Save" />} />
+
                 <div class="header">
                     <Link to="home">Home</Link>
                     <Link to="allPlaces">All places</Link>
                     <Link to="addPlace">Add place</Link>
                 </div>
+
+                
+
            
                 <div className="row">
                     <div className="col s6">
@@ -115,3 +148,7 @@ export default class Home extends React.Component {
     }
 
 }
+
+Home.childContextTypes = {
+    muiTheme: React.PropTypes.object
+};

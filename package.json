@@ -38,11 +38,13 @@
     "gulp-jsx": "^2.0.0",
     "jquery": "^2.1.4",
     "load-grunt-tasks": "^3.1.0",
+    "material-ui": "^0.10.4",
     "materialize": "^1.0.0",
     "mongoose": "^4.0.6",
     "react": "^0.13.3",
     "react-addons": "^0.9.0",
     "react-router": "^0.13.3",
+    "react-tap-event-plugin": "^0.1.7",
     "vinyl-source-stream": "^1.1.0"
   }
 }
