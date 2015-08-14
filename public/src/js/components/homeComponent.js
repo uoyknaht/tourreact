@@ -7,9 +7,14 @@ let AppBar = mui.AppBar;
 let IconButton = mui.IconButton;
 let FlatButton = mui.FlatButton;
 let NavigationClose = mui.NavigationClose;
+let TextField = mui.TextField;
 // import { RaisedButton } from 'material-ui';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import PlaceViewService from '../services/placeViewService';
+import Map from './mapComponent';
+
+
+
 
 let ThemeManager = new mui.Styles.ThemeManager();
 console.log(ThemeManager);
@@ -118,7 +123,7 @@ export default class Home extends React.Component {
 
                 <AppBar
                   title="TourReact"
-                  iconElementLeft={<IconButton>></IconButton>}
+                  iconElementLeft={<IconButton></IconButton>}
                   iconElementRight={<FlatButton label="Save" />} />
 
                 <div class="header">
@@ -127,7 +132,19 @@ export default class Home extends React.Component {
                     <Link to="addPlace">Add place</Link>
                 </div>
 
-                
+                {/*
+                <div className="row">
+                    <form className="col s12">
+                      <div className="row">
+                        <div className="input-field col s6">
+                          <i className="material-icons prefix">account_circle</i>
+                            <TextField hintText="Hint Text" floatingLabelText="Floating Label Text" />
+                        </div>
+                      </div>
+                    </form>
+                </div>
+*/}
+                 
 
            
                 <div className="row">
@@ -139,7 +156,7 @@ export default class Home extends React.Component {
                                         onUserInput={this.handleUserInput} />
                     </div>
                     <div class="col s6">
-                        Map2
+                        <Map />
                     </div>
                 </div>
                 
