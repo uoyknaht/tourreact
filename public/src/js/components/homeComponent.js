@@ -8,18 +8,11 @@ let IconButton = mui.IconButton;
 let FlatButton = mui.FlatButton;
 let NavigationClose = mui.NavigationClose;
 let TextField = mui.TextField;
-// import { RaisedButton } from 'material-ui';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import PlaceViewService from '../services/placeViewService';
 import Map from './mapComponent';
 
-
-
-
 let ThemeManager = new mui.Styles.ThemeManager();
-console.log(ThemeManager);
-console.log(mui);
-//import ThemeManager from 'material-ui/lib/styles/theme-manager';
 
 export default class Home extends React.Component {
 

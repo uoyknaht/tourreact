@@ -75,6 +75,7 @@ gulp.task('buildVendors', function () {
 
 gulp.task('buildApp', function () {
 
+
     var stream = browserify({
         entries: ['./public/src/app.js'],
         transform: [babelify],
