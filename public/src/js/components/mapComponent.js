@@ -10,14 +10,24 @@ export default class Map extends React.Component {
     }
 
     render() {
+        var markers = [];
+
+        this.props.places.forEach(function(place) {
+            markers.push({
+                lat: place.latitude,
+                lng: place.longitude
+            });
+        });
+
+        console.log(markers);
 
 
         return (
             <div>
-                <GoogleMap mapCenterLat={54} mapCenterLng={24} initialZoom={8} ref="map">
-                    <Marker lat={54} lng={24} />    
-                </GoogleMap>
+                <GoogleMap mapCenterLat={54} mapCenterLng={24} initialZoom={8} map={this.props.map} markers={markers}>
 
+                </GoogleMap>
+          
             </div>
         );
     }

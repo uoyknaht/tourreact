@@ -14,23 +14,28 @@ export default class Marker extends React.Component {
     }
 
     componentDidMount() {
-        console.log(this.props);
+
+        var markerPos = this.props.marker;
+
         var latLang = {
             lat: this.props.lat,
             lng: this.props.lng
         };
 
-        // var map = this.props.map;
+        var map = this.props.map;
 
-        // var marker = new google.maps.Marker({
-        //     position: latLang,
-        //     map: map
-        // });
+        console.log(map);
+
+        new google.maps.Marker({
+            position: markerPos,
+            map: map
+        });
 
     }
 
 
     render() {
+        console.log('rendering marker');
         return (
             <div>aaa</div>
         );

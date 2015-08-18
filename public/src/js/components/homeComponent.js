@@ -26,7 +26,14 @@ export default class Home extends React.Component {
 
         this.state = {
             places: [],
-            filterText: ''
+            filterText: '',
+            map: {},
+            markers: [
+                {
+                    lat: 54,
+                    lng: 24
+                }
+            ]
         };
 
         injectTapEventPlugin();
@@ -149,7 +156,7 @@ export default class Home extends React.Component {
                                         onUserInput={this.handleUserInput} />
                     </div>
                     <div class="col s6">
-                        <Map />
+                        <Map map={this.state.map} places={this.state.places} />
                     </div>
                 </div>
                 
