@@ -3,6 +3,9 @@ import React from 'react';
 import Router from 'react-router';  
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 
+import GoogleMap from './googleMapComponent/googleMapComponent';
+import Marker from './googleMapComponent/markerComponent';
+
 export default class PlaceForm extends React.Component {
 
     constructor(props, context) {
@@ -145,6 +148,27 @@ export default class PlaceForm extends React.Component {
                             <div class="input-field col s12">
                                 <input type="text" ref="address" />
                                 <label>Address</label>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div class="col s12">
+
+                                <div>------</div>
+{place.latitude} ???
+
+                                    <GoogleMap mapCenterLat={place.latitude} 
+                                                mapCenterLng={place.longitude} 
+                                                initialZoom={8} 
+                                                map={this.props.map} 
+                                                markers={this.state.markers}>
+
+                                    </GoogleMap>
+
+
+
+                                <div>------</div>                             
+
+
                             </div>
                         </div>
                         <div className="row">

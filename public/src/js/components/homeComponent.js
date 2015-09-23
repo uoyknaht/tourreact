@@ -26,6 +26,7 @@ export default class Home extends React.Component {
 
         this.state = {
             places: [],
+            markers: [],
             filterText: '',
             map: {},
             markers: [
@@ -156,7 +157,7 @@ export default class Home extends React.Component {
                                         onUserInput={this.handleUserInput} />
                     </div>
                     <div class="col s6">
-                        <Map map={this.state.map} places={this.state.places} />
+                     
                     </div>
                 </div>
                 
