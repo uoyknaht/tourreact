@@ -8,54 +8,38 @@ export default class GoogleMap extends React.Component {
 
         this.componentDidMount = this.componentDidMount.bind(this);
         this.getMapCenterLatLng = this.getMapCenterLatLng.bind(this);
+        this._updateMarkers = this._updateMarkers.bind(this);
+        this._removeMarkers = this._removeMarkers.bind(this);
+        this._updateCenter = this._updateCenter.bind(this);
         this.render = this.render.bind(this);
+
+        this._markers = [];
 
         this.state = {
             map: {},
-            initialZoom: 8,
+            zoom: 8,
             mapCenterLat: 43.6425569,
-            mapCenterLng: -79.4073126,         
+            mapCenterLng: -79.4073126
         };
-
-
-
     }
 
     componentDidMount (rootNode) {
 
-
-        // console.log(mapCanvas);
-        // console.log(mapOptions);
-
-        //setTimeout(function() {
-
         var mapOptions = {
             center: this.getMapCenterLatLng(),
-            zoom: this.props.initialZoom
+            zoom: this.props.zoom
         };
+
         var mapCanvas = document.getElementById('google-map');
+        var map = new google.maps.Map(mapCanvas, mapOptions);
 
-            var map = new google.maps.Map(mapCanvas, mapOptions);
-
-
-            if (this.props.markers) {
-                this.props.markers.forEach(function(marker) {
-                    new google.maps.Marker({position: marker, title: 'Hi', map: map});  
-                })            
-            }
-
-
-        //var marker = new google.maps.Marker({position: this.mapCenterLatLng(), title: 'Hi', map: map});
         this.setState({map: map});
-
-     //   }.bind(this), 1500);
-
+        this._updateMarkers();
     }
 
     componentDidUpdate () {
-        var map = this.state.map;
-
-        map.panTo(this.getMapCenterLatLng());
+       this._updateCenter();
+       this._updateMarkers();
     }   
 
     getMapCenterLatLng () {
@@ -79,6 +63,38 @@ export default class GoogleMap extends React.Component {
 
         );
     }
+
+    _updateMarkers() {
+        var map = this.state.map;
+
+        this._removeMarkers();
+
+        this.props.markersParams.forEach(function(markerParams) {
+            markerParams.map = map;
+
+            var marker = new google.maps.Marker(markerParams);  
+
+            if (markerParams.markerDragendCallback) {
+                google.maps.event.addListener(marker,'dragend', markerParams.markerDragendCallback);
+            }
+
+            this._markers.push(marker);
+        }.bind(this));         
+    }
+
+    _removeMarkers() {
+
+        this._markers.forEach(function(marker) {
+            marker.setMap(null);
+        });         
+
+        this._markers.length = 0;
+    }    
+
+    _updateCenter() {
+        var map = this.state.map;
+        map.panTo(this.getMapCenterLatLng());       
+    }    
 }
 
   // propTypes: {

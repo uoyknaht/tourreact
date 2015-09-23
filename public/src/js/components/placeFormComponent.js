@@ -18,7 +18,8 @@ export default class PlaceForm extends React.Component {
         this.render = this.render.bind(this);
 
         this.state = {
-            place: {}
+            place: {},
+            markersParams: [] 
         };   
 
         this.isEditAction = false;  
@@ -32,7 +33,25 @@ export default class PlaceForm extends React.Component {
             this.isEditAction = true;
 
             this.getPlace(placeId, function (place) {
-                _this.setState({place: place});
+                _this.setState({
+                    place: place,
+                    markersParams: [
+                        {
+                            position: {
+                                lat: place.latitude,
+                                lng: place.longitude
+                            },
+                            title: place.title,
+                            draggable: true,
+                            markerDragendCallback: function (e) {
+                                React.findDOMNode(_this.refs.latitude).value = e.latLng.lat();
+                                React.findDOMNode(_this.refs.longitude).value = e.latLng.lng();
+                                place.latitude = e.latLng.lat();
+                                place.longitude = e.latLng.lng();
+                            }
+                        }
+                    ]
+                });
 
                 React.findDOMNode(_this.refs.title).value = place.title;
                 React.findDOMNode(_this.refs.address).value = place.address;
@@ -154,13 +173,12 @@ export default class PlaceForm extends React.Component {
                             <div class="col s12">
 
                                 <div>------</div>
-{place.latitude} ???
 
                                     <GoogleMap mapCenterLat={place.latitude} 
                                                 mapCenterLng={place.longitude} 
-                                                initialZoom={8} 
+                                                zoom={8} 
                                                 map={this.props.map} 
-                                                markers={this.state.markers}>
+                                                markersParams={this.state.markersParams}>
 
                                     </GoogleMap>
 
