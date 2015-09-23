@@ -3,6 +3,8 @@ import React from 'react';
 import Router from 'react-router';  
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 
+import GoogleMap from './googleMapComponent/googleMapComponent';
+
 export default class ViewPlace extends React.Component {
 
     constructor(props, context) {
@@ -18,14 +20,24 @@ export default class ViewPlace extends React.Component {
         this.state = {
             place: {
                 _id: 'somethingForNow'
-            }
+            },
+            markersParams: []
         };    
     }
 
     componentDidMount() {
         var _this = this;
         this.getPlace(this.context.router.getCurrentParams().placeId, function (place) {
-            _this.setState({place: place});
+            _this.setState({
+                place: place,
+                markersParams: [{
+                    position: {
+                        lat: place.latitude,
+                        lng: place.longitude
+                    },
+                    title: place.title
+                }]
+            });
         });
     }    
  
@@ -90,6 +102,14 @@ export default class ViewPlace extends React.Component {
                                 category.title
                             </span>
                         </p>*/}
+
+                        <GoogleMap mapCenterLat={place.latitude} 
+                                    mapCenterLng={place.longitude} 
+                                    zoom={8} 
+                                    map={this.props.map} 
+                                    markersParams={this.state.markersParams}>
+
+                        </GoogleMap>                        
 
                         <br/>
                         <br/>

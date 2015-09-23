@@ -4,7 +4,6 @@ import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 
 import GoogleMap from './googleMapComponent/googleMapComponent';
-import Marker from './googleMapComponent/markerComponent';
 
 export default class PlaceForm extends React.Component {
 
@@ -184,8 +183,6 @@ export default class PlaceForm extends React.Component {
                         <div className="row">
                             <div class="col s12">
 
-                                <div>------</div>
-
                                     <GoogleMap mapCenterLat={place.latitude} 
                                                 mapCenterLng={place.longitude} 
                                                 zoom={8} 
@@ -193,11 +190,6 @@ export default class PlaceForm extends React.Component {
                                                 markersParams={this.state.markersParams}>
 
                                     </GoogleMap>
-
-
-
-                                <div>------</div>                             
-
 
                             </div>
                         </div>
