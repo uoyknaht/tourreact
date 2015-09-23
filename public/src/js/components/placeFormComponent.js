@@ -14,6 +14,7 @@ export default class PlaceForm extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
+        this.handleSetAdressFromCoordinates = this.handleSetAdressFromCoordinates.bind(this);
         this.render = this.render.bind(this);
 
         this.state = {
@@ -115,6 +116,31 @@ export default class PlaceForm extends React.Component {
         });        
     }  
 
+    handleSetAdressFromCoordinates(e) {
+        e.preventDefault();
+
+        var place = this.state.place;
+        var latlng = new google.maps.LatLng(place.latitude, place.longitude);
+        var geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({
+            'latLng': latlng
+            }, function (results, status) {
+                if (status === google.maps.GeocoderStatus.OK) {
+                    if (results && results[0]) {
+                        var address = results[0].formatted_address;
+                        place.address = address;
+                        this.setState({place: place});
+                        React.findDOMNode(this.refs.address).value = address;
+                    } else {
+                        console.log('No results found');
+                    }
+                } else {
+                     console.log('Geocoder failed due to: ' + status);
+                }
+            }.bind(this));
+    }
+
     handleSubmit(e) {
         e.preventDefault();
 
@@ -178,6 +204,9 @@ export default class PlaceForm extends React.Component {
                             <div class="input-field col s12">
                                 <input type="text" ref="address" />
                                 <label>Address</label>
+                            </div>
+                            <div class="col s12">
+                                <button type="button" onClick={this.handleSetAdressFromCoordinates}>Set address from coordinates</button>
                             </div>
                         </div>
                         <div className="row">
