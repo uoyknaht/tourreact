@@ -29,36 +29,48 @@ export default class PlaceForm extends React.Component {
         var _this = this;
         var placeId = this.context.router.getCurrentParams().placeId;
 
-        if (placeId) {
-            this.isEditAction = true;
-
-            this.getPlace(placeId, function (place) {
-                _this.setState({
-                    place: place,
-                    markersParams: [
-                        {
-                            position: {
-                                lat: place.latitude,
-                                lng: place.longitude
-                            },
-                            title: place.title,
-                            draggable: true,
-                            markerDragendCallback: function (e) {
-                                React.findDOMNode(_this.refs.latitude).value = e.latLng.lat();
-                                React.findDOMNode(_this.refs.longitude).value = e.latLng.lng();
-                                place.latitude = e.latLng.lat();
-                                place.longitude = e.latLng.lng();
-                            }
-                        }
-                    ]
-                });
-
-                React.findDOMNode(_this.refs.title).value = place.title;
-                React.findDOMNode(_this.refs.address).value = place.address;
-                React.findDOMNode(_this.refs.latitude).value = place.latitude;
-                React.findDOMNode(_this.refs.longitude).value = place.longitude;                
-            });            
+        if (!placeId) {
+            return;
         }
+
+        this.isEditAction = true;
+
+        this.getPlace(placeId, function (place) {
+            _this.setState({
+                place: place,
+                markersParams: [
+                    {
+                        position: {
+                            lat: place.latitude,
+                            lng: place.longitude
+                        },
+                        title: place.title,
+                        draggable: true,
+                        markerDragendCallback: function (e) {
+                            React.findDOMNode(_this.refs.latitude).value = e.latLng.lat();
+                            React.findDOMNode(_this.refs.longitude).value = e.latLng.lng();
+                            place.latitude = e.latLng.lat();
+                            place.longitude = e.latLng.lng();
+
+                            var markersParams = _this.state.markersParams;
+                            markersParams[0].position.lat = e.latLng.lat();
+                            markersParams[0].position.lng = e.latLng.lng();
+
+                            _this.setState({
+                                place: place,
+                                markersParams: markersParams
+                            });
+                        }
+                    }
+                ]
+            });
+
+            React.findDOMNode(_this.refs.title).value = place.title;
+            React.findDOMNode(_this.refs.address).value = place.address;
+            React.findDOMNode(_this.refs.latitude).value = place.latitude;
+            React.findDOMNode(_this.refs.longitude).value = place.longitude;                
+        });            
+        
 
 
     }    

@@ -75,7 +75,7 @@ export default class GoogleMap extends React.Component {
             var marker = new google.maps.Marker(markerParams);  
 
             if (markerParams.markerDragendCallback) {
-                google.maps.event.addListener(marker,'dragend', markerParams.markerDragendCallback);
+                google.maps.event.addListener(marker, 'dragend', markerParams.markerDragendCallback);
             }
 
             this._markers.push(marker);
