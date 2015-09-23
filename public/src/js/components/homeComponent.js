@@ -49,16 +49,14 @@ export default class Home extends React.Component {
         if (!isEditAction) {
             places.push(place);
         } else {
-
-            var oldPlace = null;
-
             places.every(function (_place, index) {
                 if (_place._id === place._id) {
                     places[index] = place;
-                    console.log(index);
                     return false;
                 }
-            })
+
+                return true;
+            });
         }
 
         this.setState({places: places});
