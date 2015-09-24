@@ -12,12 +12,15 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import PlaceViewService from '../services/placeViewService';
 import Map from './mapComponent';
 
+import GoogleMap from './googleMapComponent/googleMapComponent';
+
 let ThemeManager = new mui.Styles.ThemeManager();
 
 export default class Home extends React.Component {
 
     constructor() {
         super();
+        this.updateMarkersParamsFromPlaces = this.updateMarkersParamsFromPlaces.bind(this);
         this.handlePlaceSubmit = this.handlePlaceSubmit.bind(this);
         this.handleDeletePlace = this.handleDeletePlace.bind(this);
         this.handleUserInput = this.handleUserInput.bind(this);
@@ -29,10 +32,13 @@ export default class Home extends React.Component {
             markers: [],
             filterText: '',
             map: {},
-            markers: [
+            markersParams: [
                 {
-                    lat: 54,
-                    lng: 24
+                    position: {
+                        lat: 54,
+                        lng: 24
+                    },
+                    title: 'labas'
                 }
             ]
         };
@@ -41,6 +47,24 @@ export default class Home extends React.Component {
 
         // this.themeManager = new mui.Styles.ThemeManager();
         //this.themeManager = new ThemeManager();
+    }
+
+    updateMarkersParamsFromPlaces() {
+        var places = this.state.places;
+        var markersParams = [];
+
+        places.forEach(function (place) {
+            markersParams.push({
+                position: {
+                    lat: place.latitude,
+                    lng: place.longitude
+                },
+                title: 'labas'                
+            })
+        });
+
+console.log(markersParams);
+        this.setState({markersParams: markersParams});
     }
 
     handlePlaceSubmit(place, isEditAction) {
@@ -102,6 +126,7 @@ export default class Home extends React.Component {
             cache: false,
             success: function(data) {
                 this.setState({places: data});
+                this.updateMarkersParamsFromPlaces();
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(getPlacesUrl, status, err.toString());
@@ -147,15 +172,26 @@ export default class Home extends React.Component {
 
            
                 <div className="row">
-                    <div className="col s6">
+                    <div className="col s12 m6">
                         <RouteHandler places={this.state.places} 
                                         onPlaceSubmit={this.handlePlaceSubmit} 
                                         onPlaceDelete={this.handleDeletePlace}
                                         filterText={this.state.filterText} 
                                         onUserInput={this.handleUserInput} />
                     </div>
-                    <div class="col s6">
-                     
+                    <div class="col s12 m6">
+
+
+                        <GoogleMap mapCenterLat={54} 
+                                    mapCenterLng={24} 
+                                    zoom={8} 
+                                    map={this.map} 
+                                    markersParams={this.state.markersParams}>
+
+                        </GoogleMap>   
+
+
+
                     </div>
                 </div>
                 
