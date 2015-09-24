@@ -32,15 +32,7 @@ export default class Home extends React.Component {
             markers: [],
             filterText: '',
             map: {},
-            markersParams: [
-                {
-                    position: {
-                        lat: 54,
-                        lng: 24
-                    },
-                    title: 'labas'
-                }
-            ]
+            markersParams: []
         };
 
         injectTapEventPlugin();
@@ -52,6 +44,7 @@ export default class Home extends React.Component {
     updateMarkersParamsFromPlaces() {
         var places = this.state.places;
         var markersParams = [];
+        var _this = this;
 
         places.forEach(function (place) {
             markersParams.push({
@@ -59,11 +52,13 @@ export default class Home extends React.Component {
                     lat: place.latitude,
                     lng: place.longitude
                 },
-                title: 'labas'                
+                title: place.title,
+                click: function () {
+                    _this.context.router.transitionTo('viewPlace', { placeId: place._id });
+                }             
             })
         });
 
-console.log(markersParams);
         this.setState({markersParams: markersParams});
     }
 
@@ -203,4 +198,8 @@ console.log(markersParams);
 
 Home.childContextTypes = {
     muiTheme: React.PropTypes.object
+};
+
+Home.contextTypes = {
+  router: React.PropTypes.func.isRequired
 };

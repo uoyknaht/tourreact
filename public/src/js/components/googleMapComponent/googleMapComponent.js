@@ -78,6 +78,10 @@ export default class GoogleMap extends React.Component {
                 google.maps.event.addListener(marker, 'dragend', markerParams.markerDragendCallback);
             }
 
+            if (markerParams.click) {
+                google.maps.event.addListener(marker, 'click', markerParams.click);
+            }            
+
             this._markers.push(marker);
         }.bind(this));         
     }
