@@ -101,7 +101,7 @@ export default class ViewPlace extends React.Component {
                             style="margin-right: 5px;">
                                 category.title
                             </span>
-                        </p>*/}
+                        </p>
 
                         <GoogleMap mapCenterLat={place.latitude} 
                                     mapCenterLng={place.longitude} 
@@ -110,9 +110,7 @@ export default class ViewPlace extends React.Component {
                                     markersParams={this.state.markersParams}>
 
                         </GoogleMap>                        
-
-                        <br/>
-                        <br/>
+*/}
                         <div className="row">
                             <div class="input-field col s12">
                                 <button type="button" className="waves-effect waves-light btn" onClick={this.handleBackToAllPlaces}>Back to all places</button>

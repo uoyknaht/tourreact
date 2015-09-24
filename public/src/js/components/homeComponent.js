@@ -174,7 +174,7 @@ export default class Home extends React.Component {
                                         filterText={this.state.filterText} 
                                         onUserInput={this.handleUserInput} />
                     </div>
-                    <div class="col s12 m6">
+                    <div className="col s12 m6">
 
 
                         <GoogleMap mapCenterLat={54} 
