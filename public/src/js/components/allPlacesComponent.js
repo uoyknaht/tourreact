@@ -38,7 +38,11 @@ export default class AllPlaces extends React.Component {
                 <hr/>
                 <br/>
 
-                <RouteHandler onPlaceSubmit={this.props.onPlaceSubmit} onPlaceDelete={this.props.onPlaceDelete} map={this.props.map}  />
+                <RouteHandler 
+                    onPlaceSubmit={this.props.onPlaceSubmit} 
+                    onPlaceDelete={this.props.onPlaceDelete} 
+                    map={this.props.map}
+                    updateMarkersParamsFromPlaces={this.props.updateMarkersParamsFromPlaces}  />
 
             </div>
         );

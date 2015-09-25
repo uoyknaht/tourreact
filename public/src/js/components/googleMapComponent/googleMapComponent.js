@@ -75,8 +75,15 @@ export default class GoogleMap extends React.Component {
 
             var marker = new google.maps.Marker(markerParams);  
 
-            if (markerParams.markerDragendCallback) {
-                google.maps.event.addListener(marker, 'dragend', markerParams.markerDragendCallback);
+            if (markerParams.dragend) {
+                // google.maps.event.addListener(marker, 'dragend', function (e) {
+                //     markerParams.dragend(e, markerParams.place);
+                // });
+            
+                google.maps.event.addListener(marker, 'dragend', markerParams.dragend);
+                // google.maps.event.addListener(marker, 'dragend', function () {
+                //     console.log(888);
+                // });
             }
 
             if (markerParams.click) {
@@ -84,7 +91,8 @@ export default class GoogleMap extends React.Component {
             }            
 
             this._markers.push(marker);
-        }.bind(this));         
+        }.bind(this)); 
+        
     }
 
     _removeMarkers() {
@@ -98,7 +106,6 @@ export default class GoogleMap extends React.Component {
 
     _updateCenter() {
         var map = this.props.map;
-        console.log(map);
 
         if (map.panTo) {
             map.panTo(this.getMapCenterLatLng());           

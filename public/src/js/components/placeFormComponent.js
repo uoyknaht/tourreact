@@ -38,37 +38,56 @@ export default class PlaceForm extends React.Component {
         this.getPlace(placeId, function (place) {
             _this.setState({
                 place: place,
-                markersParams: [
-                    {
-                        position: {
-                            lat: place.latitude,
-                            lng: place.longitude
-                        },
-                        title: place.title,
-                        draggable: true,
-                        markerDragendCallback: function (e) {
-                            React.findDOMNode(_this.refs.latitude).value = e.latLng.lat();
-                            React.findDOMNode(_this.refs.longitude).value = e.latLng.lng();
-                            place.latitude = e.latLng.lat();
-                            place.longitude = e.latLng.lng();
+                // markersParams: [
+                //     {
+                //         position: {
+                //             lat: place.latitude,
+                //             lng: place.longitude
+                //         },
+                //         title: place.title,
+                //         draggable: true,
+                //         markerDragendCallback: function (e) {
+                //             React.findDOMNode(_this.refs.latitude).value = e.latLng.lat();
+                //             React.findDOMNode(_this.refs.longitude).value = e.latLng.lng();
+                //             place.latitude = e.latLng.lat();
+                //             place.longitude = e.latLng.lng();
 
-                            var markersParams = _this.state.markersParams;
-                            markersParams[0].position.lat = e.latLng.lat();
-                            markersParams[0].position.lng = e.latLng.lng();
+                //             var markersParams = _this.state.markersParams;
+                //             markersParams[0].position.lat = e.latLng.lat();
+                //             markersParams[0].position.lng = e.latLng.lng();
 
-                            _this.setState({
-                                place: place,
-                                markersParams: markersParams
-                            });
-                        }
-                    }
-                ]
+                //             _this.setState({
+                //                 place: place,
+                //                 markersParams: markersParams
+                //             });
+                //         }
+                //     }
+                // ]
             });
 
             React.findDOMNode(_this.refs.title).value = place.title;
             React.findDOMNode(_this.refs.address).value = place.address;
             React.findDOMNode(_this.refs.latitude).value = place.latitude;
-            React.findDOMNode(_this.refs.longitude).value = place.longitude;                
+            React.findDOMNode(_this.refs.longitude).value = place.longitude;
+
+
+            _this.props.updateMarkersParamsFromPlaces([place], {
+                dragend: function (e, place) {
+                    React.findDOMNode(_this.refs.latitude).value = e.latLng.lat();
+                    React.findDOMNode(_this.refs.longitude).value = e.latLng.lng();
+                    place.latitude = e.latLng.lat();
+                    place.longitude = e.latLng.lng();
+
+                    var markersParams = _this.state.markersParams;
+                    markersParams[0].position.lat = e.latLng.lat();
+                    markersParams[0].position.lng = e.latLng.lng();
+
+                    _this.setState({
+                        place: place,
+                        markersParams: markersParams
+                    });
+                }                
+            })                            
         });            
         
 
@@ -211,15 +230,14 @@ export default class PlaceForm extends React.Component {
                         </div>
                         <div className="row">
                             <div class="col s12">
-
-                                    <GoogleMap mapCenterLat={place.latitude} 
+{/*                                    <GoogleMap mapCenterLat={place.latitude} 
                                                 mapCenterLng={place.longitude} 
                                                 zoom={8} 
                                                 map={this.props.map} 
                                                 markersParams={this.state.markersParams}>
 
                                     </GoogleMap>
-
+*/}
                             </div>
                         </div>
                         <div className="row">

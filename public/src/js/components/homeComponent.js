@@ -43,22 +43,29 @@ export default class Home extends React.Component {
         //this.themeManager = new ThemeManager();
     }
 
-    updateMarkersParamsFromPlaces() {
-        var places = this.state.places;
+    updateMarkersParamsFromPlaces(places, callbacks) {
         var markersParams = [];
         var _this = this;
 
         places.forEach(function (place) {
-            markersParams.push({
+            var params = {
                 position: {
                     lat: place.latitude,
                     lng: place.longitude
                 },
-                title: place.title,
-                click: function () {
-                    _this.context.router.transitionTo('viewPlace', { placeId: place._id });
-                }             
-            })
+                title: place.title            
+            };
+
+            if (callbacks) {
+                for (var key in callbacks) {
+                    params[key] = function (e) {
+                        callbacks[key](e, place);
+                    }
+                }
+            }
+
+
+            markersParams.push(params);
         });
 
         this.setState({markersParams: markersParams});
@@ -117,13 +124,18 @@ export default class Home extends React.Component {
 
     componentDidMount() {
         var getPlacesUrl = 'api/places';
+        var _this = this;
 
         $.ajax({
             url: getPlacesUrl,
             cache: false,
             success: function(data) {
                 this.setState({places: data});
-                this.updateMarkersParamsFromPlaces();
+                this.updateMarkersParamsFromPlaces(data, {
+                    click: function (e, place) {
+                        _this.context.router.transitionTo('viewPlace', { placeId: place._id });
+                    } 
+                });
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(getPlacesUrl, status, err.toString());
@@ -185,7 +197,8 @@ export default class Home extends React.Component {
                                         onPlaceDelete={this.handleDeletePlace}
                                         filterText={this.state.filterText} 
                                         onUserInput={this.handleUserInput}
-                                        map={this.state.map} />
+                                        map={this.state.map}
+                                        updateMarkersParamsFromPlaces={this.updateMarkersParamsFromPlaces} />
                     </div>
                     <div className="col s12 m6">
 
