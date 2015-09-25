@@ -25,15 +25,16 @@ export default class GoogleMap extends React.Component {
 
     componentDidMount (rootNode) {
 
-        var mapOptions = {
-            center: this.getMapCenterLatLng(),
-            zoom: this.props.zoom
-        };
+        // var mapOptions = {
+        //     center: this.getMapCenterLatLng(),
+        //     zoom: this.props.zoom
+        // };
 
-        var mapCanvas = document.getElementById('google-map');
-        var map = new google.maps.Map(mapCanvas, mapOptions);
+        // var mapCanvas = document.getElementById('google-map');
+        // this.props.map = new google.maps.Map(mapCanvas, mapOptions);
+        
 
-        this.setState({map: map});
+        //this.setState({map: map});
         this._updateMarkers();
     }
 
@@ -65,7 +66,7 @@ export default class GoogleMap extends React.Component {
     }
 
     _updateMarkers() {
-        var map = this.state.map;
+        var map = this.props.map;
 
         this._removeMarkers();
 
@@ -96,8 +97,15 @@ export default class GoogleMap extends React.Component {
     }    
 
     _updateCenter() {
-        var map = this.state.map;
-        map.panTo(this.getMapCenterLatLng());       
+        var map = this.props.map;
+        console.log(map);
+
+        if (map.panTo) {
+            map.panTo(this.getMapCenterLatLng());           
+        } else {
+            console.log('map not ready yet');
+        }
+        
     }    
 }
 

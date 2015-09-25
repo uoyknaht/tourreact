@@ -21,22 +21,23 @@ export default class ViewPlace extends React.Component {
             place: {
                 _id: 'somethingForNow'
             },
-            markersParams: []
+            // markersParams: []
         };    
     }
 
     componentDidMount() {
         var _this = this;
         this.getPlace(this.context.router.getCurrentParams().placeId, function (place) {
+
             _this.setState({
-                place: place,
-                markersParams: [{
-                    position: {
-                        lat: place.latitude,
-                        lng: place.longitude
-                    },
-                    title: place.title
-                }]
+                place: place
+                // markersParams: [{
+                //     position: {
+                //         lat: place.latitude,
+                //         lng: place.longitude
+                //     },
+                //     title: place.title
+                // }]
             });
         });
     }    

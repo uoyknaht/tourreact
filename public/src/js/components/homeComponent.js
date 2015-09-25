@@ -35,6 +35,8 @@ export default class Home extends React.Component {
             markersParams: []
         };
 
+        console.log('map initialized');
+
         injectTapEventPlugin();
 
         // this.themeManager = new mui.Styles.ThemeManager();
@@ -127,6 +129,16 @@ export default class Home extends React.Component {
                 console.error(getPlacesUrl, status, err.toString());
             }.bind(this)
         });
+
+        var map = new google.maps.Map(
+            document.getElementById('google-map'), 
+            {
+                center: new google.maps.LatLng(54, 24),
+                zoom: 8
+            }
+        );
+
+        this.setState({map: map});
     }
 
     getChildContext() {
@@ -172,7 +184,8 @@ export default class Home extends React.Component {
                                         onPlaceSubmit={this.handlePlaceSubmit} 
                                         onPlaceDelete={this.handleDeletePlace}
                                         filterText={this.state.filterText} 
-                                        onUserInput={this.handleUserInput} />
+                                        onUserInput={this.handleUserInput}
+                                        map={this.state.map} />
                     </div>
                     <div className="col s12 m6">
 
@@ -180,7 +193,7 @@ export default class Home extends React.Component {
                         <GoogleMap mapCenterLat={54} 
                                     mapCenterLng={24} 
                                     zoom={8} 
-                                    map={this.map} 
+                                    map={this.state.map} 
                                     markersParams={this.state.markersParams}>
 
                         </GoogleMap>   
