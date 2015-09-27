@@ -32,7 +32,9 @@ export default class Home extends React.Component {
             markers: [],
             filterText: '',
             map: {},
-            markersParams: []
+            markersParams: [],
+            mapCenterLat: 54,
+            mapCenterLbg: 34
         };
 
         console.log('map initialized');
@@ -69,6 +71,11 @@ export default class Home extends React.Component {
         });
 
         this.setState({markersParams: markersParams});
+
+        if (places.length === 1) {
+            this.state.mapCenterLat = places[0].latitude;
+            this.state.mapCenterLng = places[0].longitude;
+        }
     }
 
     handlePlaceSubmit(place, isEditAction) {
@@ -203,8 +210,8 @@ export default class Home extends React.Component {
                     <div className="col s12 m6">
 
 
-                        <GoogleMap mapCenterLat={54} 
-                                    mapCenterLng={24} 
+                        <GoogleMap mapCenterLat={this.state.mapCenterLat} 
+                                    mapCenterLng={this.state.mapCenterLng} 
                                     zoom={8} 
                                     map={this.state.map} 
                                     markersParams={this.state.markersParams}>

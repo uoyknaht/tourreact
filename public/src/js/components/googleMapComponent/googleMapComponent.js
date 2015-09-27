@@ -14,6 +14,8 @@ export default class GoogleMap extends React.Component {
         this.render = this.render.bind(this);
 
         this._markers = [];
+        this._currentLat = null;
+        this._currentLng = null;
 
         this.state = {
             map: {},
@@ -106,12 +108,18 @@ export default class GoogleMap extends React.Component {
 
     _updateCenter() {
         var map = this.props.map;
+        var lat = this.props.mapCenterLat;
+        var lng = this.props.mapCenterLng;
 
-        if (map.panTo) {
-            map.panTo(this.getMapCenterLatLng());           
-        } else {
-            console.log('map not ready yet');
+        if (this._currentLat !== lat || this.currentLng !== lng) {
+
+            if (map.panTo) {
+                map.panTo(this.getMapCenterLatLng());           
+            } else {
+                console.log('map not ready yet');
+            }            
         }
+
         
     }    
 }

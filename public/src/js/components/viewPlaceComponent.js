@@ -17,6 +17,8 @@ export default class ViewPlace extends React.Component {
         this.redirectToAllPlaces = this.redirectToAllPlacesView.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
 
+        this._currentPlaceId = null;
+
         this.state = {
             place: {
                 _id: 'somethingForNow'
@@ -26,21 +28,12 @@ export default class ViewPlace extends React.Component {
     }
 
     componentDidMount() {
-        var _this = this;
-        this.getPlace(this.context.router.getCurrentParams().placeId, function (place) {
-
-            _this.setState({
-                place: place
-                // markersParams: [{
-                //     position: {
-                //         lat: place.latitude,
-                //         lng: place.longitude
-                //     },
-                //     title: place.title
-                // }]
-            });
-        });
+        this._updatePlace(false);
     }    
+
+    componentDidUpdate() {
+        this._updatePlace(true);
+    }       
  
     getPlace(placeId, callback) {
         $.ajax({
@@ -74,9 +67,47 @@ export default class ViewPlace extends React.Component {
         this.context.router.transitionTo('allPlaces');
     }
 
+    _updatePlace(shouldCheckForCurrenPlace) {
+        var _this = this;
+        var placeId = this.context.router.getCurrentParams().placeId;
+
+        if (shouldCheckForCurrenPlace && this._currentPlaceId === placeId) {
+            return;
+        }
+
+        _this._currentPlaceId = placeId;
+
+        this.getPlace(placeId, function (place) {
+
+            _this.setState({
+                place: place
+                // markersParams: [{
+                //     position: {
+                //         lat: place.latitude,
+                //         lng: place.longitude
+                //     },
+                //     title: place.title
+                // }]
+            });
+
+            
+
+
+            _this.props.updateMarkersParamsFromPlaces([place], {
+                click: function (e, place) {
+                    _this.context.router.transitionTo('viewPlace', { placeId: place._id });
+                }                
+            })
+
+        });
+        
+    }    
+
     render() {
 
         var place = this.state.place;
+
+        console.log(this.state.place.title);
 
         return (
             <div className="dynamic-menu" key={place}>

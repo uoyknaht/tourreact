@@ -87,7 +87,7 @@ export default class PlaceForm extends React.Component {
                         markersParams: markersParams
                     });
                 }                
-            })                            
+            })
         });            
         
 
