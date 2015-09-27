@@ -25,7 +25,11 @@ export default class Home extends React.Component {
         this.handleDeletePlace = this.handleDeletePlace.bind(this);
         this.handleUserInput = this.handleUserInput.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
+        this.getPlace = this.getPlace.bind(this);
+        this._whenAllPlacesAreLoaded = this._whenAllPlacesAreLoaded.bind(this);
         this.render = this.render.bind(this);
+
+        this.isAllPlacesLoaded = false;
 
         this.state = {
             places: [],
@@ -33,11 +37,9 @@ export default class Home extends React.Component {
             filterText: '',
             map: {},
             markersParams: [],
-            mapCenterLat: 54,
-            mapCenterLbg: 34
+            mapCenterLat: 54.940477128917166,
+            mapCenterLng: 23.721830736236598
         };
-
-        console.log('map initialized');
 
         injectTapEventPlugin();
 
@@ -113,7 +115,6 @@ export default class Home extends React.Component {
                     places: places
                 });
 
-                console.log('deleted');
                 callback();
             }.bind(this),
             error: function(xhr, status, err) {
@@ -143,6 +144,8 @@ export default class Home extends React.Component {
                         _this.context.router.transitionTo('viewPlace', { placeId: place._id });
                     } 
                 });
+
+                this.isAllPlacesLoaded = true;
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(getPlacesUrl, status, err.toString());
@@ -166,6 +169,53 @@ export default class Home extends React.Component {
             // muiTheme: this.themeManager.getCurrentTheme()
         };
     }
+
+    _whenAllPlacesAreLoaded() {
+        var _this = this;
+
+        var promise = new Promise(function(resolve, reject) {
+            if (_this.isAllPlacesLoaded) {
+                resolve();
+            } else {
+                var interval = setInterval(function() {
+                    if (_this.isAllPlacesLoaded) {
+                        clearInterval(interval);
+                        resolve();
+                    }
+                }, 100);
+            }
+        });
+
+        return promise;
+    }
+
+    getPlace(placeId) {
+        var _this = this;
+
+        var promise = new Promise(function (resolve, reject) {
+            _this._whenAllPlacesAreLoaded().then(function() {
+               var placeViewService = new PlaceViewService();
+               var place = placeViewService.getPlace(_this.state.places, placeId);            
+               resolve(place);
+           });           
+
+                // var interval = setInterval(function() {
+                //     if (_this.isAllPlacesLoaded) {
+                //         clearInterval(interval);
+
+                //         var placeViewService = new PlaceViewService();
+                //         var place = placeViewService.getPlace(_this.state.places, placeId); 
+                //         resolve(place);
+
+                //     }
+
+                // }, 100);
+                        
+
+        }) ;
+
+        return promise;
+    }    
 
     render() {
         return (
@@ -204,6 +254,7 @@ export default class Home extends React.Component {
                                         onPlaceDelete={this.handleDeletePlace}
                                         filterText={this.state.filterText} 
                                         onUserInput={this.handleUserInput}
+                                        getPlace={this.getPlace}
                                         map={this.state.map}
                                         updateMarkersParamsFromPlaces={this.updateMarkersParamsFromPlaces} />
                     </div>

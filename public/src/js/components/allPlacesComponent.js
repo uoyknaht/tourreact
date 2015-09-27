@@ -10,6 +10,10 @@ export default class AllPlaces extends React.Component {
         this.render = this.render.bind(this);
     }
 
+    componentDidUpdate() {
+        console.log('aaa');
+    }
+
     render() {
         // console.log('loading all places');
         var places = [];
@@ -17,7 +21,7 @@ export default class AllPlaces extends React.Component {
         this.props.places.forEach(function (place) {
             if (place.title.indexOf(this.props.filterText) !== -1) {
                 places.push(
-                    <li className="collection-item avatar">
+                    <li className="collection-item avatar"  key={place._id}>
                         <img src="src/img/alert-info.png" className="circle" />
                         
                         <Link className="title" to="viewPlace" params={{placeId: place._id}}>{place.title}</Link>
@@ -40,7 +44,8 @@ export default class AllPlaces extends React.Component {
 
                 <RouteHandler 
                     onPlaceSubmit={this.props.onPlaceSubmit} 
-                    onPlaceDelete={this.props.onPlaceDelete} 
+                    onPlaceDelete={this.props.onPlaceDelete}
+                    getPlace={this.props.getPlace} 
                     map={this.props.map}
                     updateMarkersParamsFromPlaces={this.props.updateMarkersParamsFromPlaces}  />
 

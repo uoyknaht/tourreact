@@ -113,6 +113,9 @@ export default class GoogleMap extends React.Component {
 
         if (this._currentLat !== lat || this.currentLng !== lng) {
 
+            this._currentLat = lat;
+            this._currentLng = lng;
+
             if (map.panTo) {
                 map.panTo(this.getMapCenterLatLng());           
             } else {

@@ -75,23 +75,14 @@ export default class ViewPlace extends React.Component {
             return;
         }
 
-        _this._currentPlaceId = placeId;
+        this._currentPlaceId = placeId;
 
-        this.getPlace(placeId, function (place) {
+
+        this.props.getPlace(placeId).then(function (place) {
 
             _this.setState({
                 place: place
-                // markersParams: [{
-                //     position: {
-                //         lat: place.latitude,
-                //         lng: place.longitude
-                //     },
-                //     title: place.title
-                // }]
             });
-
-            
-
 
             _this.props.updateMarkersParamsFromPlaces([place], {
                 click: function (e, place) {
@@ -103,11 +94,11 @@ export default class ViewPlace extends React.Component {
         
     }    
 
+
+
     render() {
 
         var place = this.state.place;
-
-        console.log(this.state.place.title);
 
         return (
             <div className="dynamic-menu" key={place}>
