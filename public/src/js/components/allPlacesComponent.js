@@ -46,6 +46,7 @@ export default class AllPlaces extends React.Component {
                     onPlaceSubmit={this.props.onPlaceSubmit} 
                     onPlaceDelete={this.props.onPlaceDelete}
                     getPlace={this.props.getPlace} 
+                    getPlaces={this.props.getPlaces} 
                     map={this.props.map}
                     updateMarkersParamsFromPlaces={this.props.updateMarkersParamsFromPlaces}  />
 

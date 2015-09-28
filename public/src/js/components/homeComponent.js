@@ -26,6 +26,7 @@ export default class Home extends React.Component {
         this.handleUserInput = this.handleUserInput.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.getPlace = this.getPlace.bind(this);
+        this.getPlaces = this.getPlaces.bind(this);
         this._whenAllPlacesAreLoaded = this._whenAllPlacesAreLoaded.bind(this);
         this.render = this.render.bind(this);
 
@@ -199,20 +200,20 @@ export default class Home extends React.Component {
                resolve(place);
            });           
 
-                // var interval = setInterval(function() {
-                //     if (_this.isAllPlacesLoaded) {
-                //         clearInterval(interval);
-
-                //         var placeViewService = new PlaceViewService();
-                //         var place = placeViewService.getPlace(_this.state.places, placeId); 
-                //         resolve(place);
-
-                //     }
-
-                // }, 100);
-                        
-
         }) ;
+
+        return promise;
+    }    
+
+    getPlaces() {
+        var _this = this;
+
+        var promise = new Promise(function (resolve, reject) {
+            _this._whenAllPlacesAreLoaded().then(function() {
+               resolve(_this.state.places);
+           });           
+
+        });
 
         return promise;
     }    
@@ -255,6 +256,7 @@ export default class Home extends React.Component {
                                         filterText={this.state.filterText} 
                                         onUserInput={this.handleUserInput}
                                         getPlace={this.getPlace}
+                                        getPlaces={this.getPlaces}
                                         map={this.state.map}
                                         updateMarkersParamsFromPlaces={this.updateMarkersParamsFromPlaces} />
                     </div>
