@@ -38,14 +38,6 @@ export default class Map extends React.Component {
 
     render() {
       
-
-
-
-        console.log(this.state.markers);
-
-       // console.log(markers);
-
-
         return (
             <div>
                 <GoogleMap mapCenterLat={54} mapCenterLng={24} initialZoom={8} map={this.props.map} markers={this.state.markers}>

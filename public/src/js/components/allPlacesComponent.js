@@ -15,7 +15,6 @@ export default class AllPlaces extends React.Component {
     }
 
     render() {
-        // console.log('loading all places');
         var places = [];
 
         this.props.places.forEach(function (place) {
@@ -42,13 +41,7 @@ export default class AllPlaces extends React.Component {
                 <hr/>
                 <br/>
 
-                <RouteHandler 
-                    onPlaceSubmit={this.props.onPlaceSubmit} 
-                    onPlaceDelete={this.props.onPlaceDelete}
-                    getPlace={this.props.getPlace} 
-                    getPlaces={this.props.getPlaces} 
-                    map={this.props.map}
-                    updateMarkersParamsFromPlaces={this.props.updateMarkersParamsFromPlaces}  />
+                <RouteHandler map={this.props.map} />
 
             </div>
         );

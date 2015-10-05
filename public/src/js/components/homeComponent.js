@@ -13,6 +13,8 @@ import PlaceViewService from '../services/placeViewService';
 import Map from './mapComponent';
 
 import GoogleMap from './googleMapComponent/googleMapComponent';
+import PlaceActions from '../actions/placeActions';
+import PlaceStore from '../stores/placeStore';
 
 let ThemeManager = new mui.Styles.ThemeManager();
 
@@ -21,13 +23,13 @@ export default class Home extends React.Component {
     constructor() {
         super();
         this.updateMarkersParamsFromPlaces = this.updateMarkersParamsFromPlaces.bind(this);
-        this.handlePlaceSubmit = this.handlePlaceSubmit.bind(this);
         this.handleDeletePlace = this.handleDeletePlace.bind(this);
         this.handleUserInput = this.handleUserInput.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
-        this.getPlace = this.getPlace.bind(this);
-        this.getPlaces = this.getPlaces.bind(this);
+        // this.getPlace = this.getPlace.bind(this);
+        // this.getPlaces = this.getPlaces.bind(this);
         this._whenAllPlacesAreLoaded = this._whenAllPlacesAreLoaded.bind(this);
+        this._onChange = this._onChange.bind(this);
         this.render = this.render.bind(this);
 
         this.isAllPlacesLoaded = false;
@@ -81,24 +83,24 @@ export default class Home extends React.Component {
         }
     }
 
-    handlePlaceSubmit(place, isEditAction) {
-        var places = this.state.places;
+    // handlePlaceSubmit(place, isEditAction) {
+    //     var places = this.state.places;
 
-        if (!isEditAction) {
-            places.push(place);
-        } else {
-            places.every(function (_place, index) {
-                if (_place._id === place._id) {
-                    places[index] = place;
-                    return false;
-                }
+    //     if (!isEditAction) {
+    //         places.push(place);
+    //     } else {
+    //         places.every(function (_place, index) {
+    //             if (_place._id === place._id) {
+    //                 places[index] = place;
+    //                 return false;
+    //             }
 
-                return true;
-            });
-        }
+    //             return true;
+    //         });
+    //     }
 
-        this.setState({places: places});
-    }
+    //     this.setState({places: places});
+    // }
 
     handleDeletePlace(placeId, callback) {
 
@@ -124,6 +126,21 @@ export default class Home extends React.Component {
         });        
     }
 
+    _onChange() {
+        var _this = this;
+        var places = PlaceStore.getAllPlaces();
+
+        this.setState({ places: places });
+
+        this.updateMarkersParamsFromPlaces(places, {
+            click: function (e, place) {
+                _this.context.router.transitionTo('viewPlace', { placeId: place._id });
+            } 
+        });
+
+        this.isAllPlacesLoaded = true;        
+    }
+
     handleUserInput(filterText) {
         console.log(filterText);
         this.setState({
@@ -131,27 +148,17 @@ export default class Home extends React.Component {
         });
     }
 
+    componentWillMount() {
+        PlaceStore.addChangeListener(this._onChange)
+    }
+
+    componentWillUnmount() {
+        PlaceStore.removeChangeListener(this._onChange)
+    }
+
     componentDidMount() {
-        var getPlacesUrl = 'api/places';
-        var _this = this;
 
-        $.ajax({
-            url: getPlacesUrl,
-            cache: false,
-            success: function(data) {
-                this.setState({places: data});
-                this.updateMarkersParamsFromPlaces(data, {
-                    click: function (e, place) {
-                        _this.context.router.transitionTo('viewPlace', { placeId: place._id });
-                    } 
-                });
-
-                this.isAllPlacesLoaded = true;
-            }.bind(this),
-            error: function(xhr, status, err) {
-                console.error(getPlacesUrl, status, err.toString());
-            }.bind(this)
-        });
+        PlaceActions.getAllPlaces();
 
         var map = new google.maps.Map(
             document.getElementById('google-map'), 
@@ -190,33 +197,33 @@ export default class Home extends React.Component {
         return promise;
     }
 
-    getPlace(placeId) {
-        var _this = this;
+    // getPlace(placeId) {
+    //     var _this = this;
 
-        var promise = new Promise(function (resolve, reject) {
-            _this._whenAllPlacesAreLoaded().then(function() {
-               var placeViewService = new PlaceViewService();
-               var place = placeViewService.getPlace(_this.state.places, placeId);            
-               resolve(place);
-           });           
+    //     var promise = new Promise(function (resolve, reject) {
+    //         _this._whenAllPlacesAreLoaded().then(function() {
+    //            var placeViewService = new PlaceViewService();
+    //            var place = placeViewService.getPlace(_this.state.places, placeId);            
+    //            resolve(place);
+    //        });           
 
-        }) ;
+    //     }) ;
 
-        return promise;
-    }    
+    //     return promise;
+    // }    
 
-    getPlaces() {
-        var _this = this;
+    // getPlaces() {
+    //     var _this = this;
 
-        var promise = new Promise(function (resolve, reject) {
-            _this._whenAllPlacesAreLoaded().then(function() {
-               resolve(_this.state.places);
-           });           
+    //     var promise = new Promise(function (resolve, reject) {
+    //         _this._whenAllPlacesAreLoaded().then(function() {
+    //            resolve(_this.state.places);
+    //        });           
 
-        });
+    //     });
 
-        return promise;
-    }    
+    //     return promise;
+    // }    
 
     render() {
         return (
@@ -251,14 +258,9 @@ export default class Home extends React.Component {
                 <div className="row">
                     <div className="col s12 m6">
                         <RouteHandler places={this.state.places} 
-                                        onPlaceSubmit={this.handlePlaceSubmit} 
-                                        onPlaceDelete={this.handleDeletePlace}
                                         filterText={this.state.filterText} 
                                         onUserInput={this.handleUserInput}
-                                        getPlace={this.getPlace}
-                                        getPlaces={this.getPlaces}
-                                        map={this.state.map}
-                                        updateMarkersParamsFromPlaces={this.updateMarkersParamsFromPlaces} />
+                                        map={this.state.map} />
                     </div>
                     <div className="col s12 m6">
 

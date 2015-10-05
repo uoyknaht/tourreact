@@ -4,6 +4,7 @@ import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 
 import GoogleMap from './googleMapComponent/googleMapComponent';
+import PlaceActions from '../actions/placeActions';
 
 export default class PlaceForm extends React.Component {
 
@@ -26,69 +27,44 @@ export default class PlaceForm extends React.Component {
     }
 
     componentDidMount() {
-        var _this = this;
-        var placeId = this.context.router.getCurrentParams().placeId;
+        // var _this = this;
+        // var placeId = this.context.router.getCurrentParams().placeId;
 
-        if (!placeId) {
-            return;
-        }
+        // if (!placeId) {
+        //     return;
+        // }
 
-        this.isEditAction = true;
+        // this.isEditAction = true;
 
-        this.getPlace(placeId, function (place) {
-            _this.setState({
-                place: place,
-                // markersParams: [
-                //     {
-                //         position: {
-                //             lat: place.latitude,
-                //             lng: place.longitude
-                //         },
-                //         title: place.title,
-                //         draggable: true,
-                //         markerDragendCallback: function (e) {
-                //             React.findDOMNode(_this.refs.latitude).value = e.latLng.lat();
-                //             React.findDOMNode(_this.refs.longitude).value = e.latLng.lng();
-                //             place.latitude = e.latLng.lat();
-                //             place.longitude = e.latLng.lng();
+        // this.getPlace(placeId, function (place) {
+        //     _this.setState({
+        //         place: place,
+        //     });
 
-                //             var markersParams = _this.state.markersParams;
-                //             markersParams[0].position.lat = e.latLng.lat();
-                //             markersParams[0].position.lng = e.latLng.lng();
-
-                //             _this.setState({
-                //                 place: place,
-                //                 markersParams: markersParams
-                //             });
-                //         }
-                //     }
-                // ]
-            });
-
-            React.findDOMNode(_this.refs.title).value = place.title;
-            React.findDOMNode(_this.refs.address).value = place.address;
-            React.findDOMNode(_this.refs.latitude).value = place.latitude;
-            React.findDOMNode(_this.refs.longitude).value = place.longitude;
+        //     React.findDOMNode(_this.refs.title).value = place.title;
+        //     React.findDOMNode(_this.refs.address).value = place.address;
+        //     React.findDOMNode(_this.refs.latitude).value = place.latitude;
+        //     React.findDOMNode(_this.refs.longitude).value = place.longitude;
 
 
-            _this.props.updateMarkersParamsFromPlaces([place], {
-                dragend: function (e, place) {
-                    React.findDOMNode(_this.refs.latitude).value = e.latLng.lat();
-                    React.findDOMNode(_this.refs.longitude).value = e.latLng.lng();
-                    place.latitude = e.latLng.lat();
-                    place.longitude = e.latLng.lng();
+        //     _this.props.updateMarkersParamsFromPlaces([place], {
+        //         dragend: function (e, place) {
+        //             React.findDOMNode(_this.refs.latitude).value = e.latLng.lat();
+        //             React.findDOMNode(_this.refs.longitude).value = e.latLng.lng();
+        //             place.latitude = e.latLng.lat();
+        //             place.longitude = e.latLng.lng();
 
-                    var markersParams = _this.state.markersParams;
-                    markersParams[0].position.lat = e.latLng.lat();
-                    markersParams[0].position.lng = e.latLng.lng();
+        //             var markersParams = _this.state.markersParams;
+        //             markersParams[0].position.lat = e.latLng.lat();
+        //             markersParams[0].position.lng = e.latLng.lng();
 
-                    _this.setState({
-                        place: place,
-                        markersParams: markersParams
-                    });
-                }                
-            })
-        });            
+        //             _this.setState({
+        //                 place: place,
+        //                 markersParams: markersParams
+        //             });
+        //         }                
+        //     })
+        // });            
         
 
 
@@ -113,27 +89,30 @@ export default class PlaceForm extends React.Component {
         });
     }   
 
-    savePlace(data, callback) {
-        var savePlaceUrl = 'api/places';
-        var methodType = 'POST';
-        
-        if (this.isEditAction) {
-            savePlaceUrl = savePlaceUrl + '/' + this.state.place._id;
-            methodType = 'PUT';
-        }
+    // savePlace(data, callback) {
 
-        $.ajax({
-            method: methodType,
-            data: data,
-            url: savePlaceUrl,
-            success: function(addedOrEditedPlace) {
-                callback(addedOrEditedPlace);
-            }.bind(this),
-            error: function(xhr, status, err) {
-                console.error(savePlaceUrl, status, err.toString());
-            }.bind(this)
-        });        
-    }  
+    //     PlaceActions.savePlace()
+
+    //     var savePlaceUrl = 'api/places';
+    //     var methodType = 'POST';
+        
+    //     if (this.isEditAction) {
+    //         savePlaceUrl = savePlaceUrl + '/' + this.state.place._id;
+    //         methodType = 'PUT';
+    //     }
+
+    //     $.ajax({
+    //         method: methodType,
+    //         data: data,
+    //         url: savePlaceUrl,
+    //         success: function(addedOrEditedPlace) {
+    //             callback(addedOrEditedPlace);
+    //         }.bind(this),
+    //         error: function(xhr, status, err) {
+    //             console.error(savePlaceUrl, status, err.toString());
+    //         }.bind(this)
+    //     });        
+    // }  
 
     handleSetAdressFromCoordinates(e) {
         e.preventDefault();
@@ -177,20 +156,21 @@ export default class PlaceForm extends React.Component {
             data._id = this.state.place._id;
         }
 
+        PlaceActions.savePlace(data);
 
-        this.savePlace(data, function (place) {
-            _this.props.onPlaceSubmit(data, _this.isEditAction);
+        // this.savePlace(data, function (place) {
+        //     _this.props.onPlaceSubmit(data, _this.isEditAction);
 
-            if (!this.isEditAction) {
-                React.findDOMNode(this.refs.title).value = '';
-                React.findDOMNode(this.refs.address).value = '';
-                React.findDOMNode(this.refs.latitude).value = '';
-                React.findDOMNode(this.refs.longitude).value = '';
+        //     if (!this.isEditAction) {
+        //         React.findDOMNode(this.refs.title).value = '';
+        //         React.findDOMNode(this.refs.address).value = '';
+        //         React.findDOMNode(this.refs.latitude).value = '';
+        //         React.findDOMNode(this.refs.longitude).value = '';
 
-                this.context.router.transitionTo('viewPlace', { placeId: place._id });
-            }
+        //         this.context.router.transitionTo('viewPlace', { placeId: place._id });
+        //     }
 
-        }.bind(this));
+        // }.bind(this));
 
     }
 

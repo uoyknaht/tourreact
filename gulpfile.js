@@ -16,6 +16,17 @@ var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var jsx = require('gulp-jsx');
 var browserSync = require('browser-sync').create();
+var lint = require('gulp-eslint');
+
+
+var config = {
+    paths: {
+        js: './public/src/**/*.js',
+        images: './public/src/img/*',
+        src: './public/src',
+        dist: './public/build'
+    }
+};
 
 // gulp.task("default", function () {
 //   return gulp.src("public/src/**/*.js")
@@ -90,7 +101,7 @@ gulp.task('buildApp', function () {
 
     return stream.bundle()
                  .pipe(source('bundle.js'))
-                 .pipe(gulp.dest('./public/build'));
+                 .pipe(gulp.dest(config.paths.dist));
 
 });
 
@@ -104,8 +115,23 @@ gulp.task('browsersync', ['buildVendors','buildApp'], function () {
     });
 });
 
-gulp.task('watch', ['buildApp'], function () {
-  gulp.watch(['./public/src/**/*.js'], ['buildApp'])
+gulp.task('lint', function () {
+    return gulp.src(config.paths.js)
+            .pipe(lint({config: 'eslint.config.json'}))
+            .pipe(lint.format());
+});
+
+gulp.task('images', function () {
+    gulp.src(config.paths.images)
+        .pipe(gulp.dest(config.paths.dist + '/images'));
+
+    gulp.src(config.paths.src + '/favicon.ico')
+        .pipe(gulp.dest(config.paths.dist));
+});
+
+
+gulp.task('watch', [/*'lint', */'buildApp'], function () {
+  gulp.watch([config.paths.js], ['buildApp']);
 });
 
 

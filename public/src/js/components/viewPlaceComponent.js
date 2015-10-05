@@ -51,9 +51,9 @@ export default class ViewPlace extends React.Component {
     handleDelete() {
         var placeId = this.state.place._id;
 
-        this.props.onPlaceDelete(placeId, () => {
-            this.redirectToAllPlacesView();
-        });
+        // this.props.onPlaceDelete(placeId, () => {
+        //     this.redirectToAllPlacesView();
+        // });
 
         return false;
     }
@@ -78,19 +78,19 @@ export default class ViewPlace extends React.Component {
         this._currentPlaceId = placeId;
 
 
-        this.props.getPlace(placeId).then(function (place) {
+        // this.props.getPlace(placeId).then(function (place) {
 
-            _this.setState({
-                place: place
-            });
+        //     _this.setState({
+        //         place: place
+        //     });
 
-            _this.props.updateMarkersParamsFromPlaces([place], {
-                click: function (e, place) {
-                    _this.context.router.transitionTo('viewPlace', { placeId: place._id });
-                }                
-            })
+        //     _this.props.updateMarkersParamsFromPlaces([place], {
+        //         click: function (e, place) {
+        //             _this.context.router.transitionTo('viewPlace', { placeId: place._id });
+        //         }                
+        //     })
 
-        });
+        // });
         
     }    
 

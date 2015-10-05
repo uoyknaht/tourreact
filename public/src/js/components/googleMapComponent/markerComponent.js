@@ -24,8 +24,6 @@ export default class Marker extends React.Component {
 
         var map = this.props.map;
 
-        console.log(map);
-
         new google.maps.Marker({
             position: markerPos,
             map: map
