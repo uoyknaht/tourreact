@@ -13,7 +13,6 @@ export default class ViewPlace extends React.Component {
         super(props);
         this.context = context;
         this.render = this.render.bind(this);
-        // this.getPlace = this.getPlace.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleBackToAllPlaces = this.handleBackToAllPlaces.bind(this);
         this.redirectToAllPlaces = this.redirectToAllPlacesView.bind(this);
@@ -23,15 +22,10 @@ export default class ViewPlace extends React.Component {
         this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
         this._onChange = this._onChange.bind(this);
 
-
-
-        this._currentPlaceId = null;
-
         this.state = {
             place: {
                 _id: 'somethingForNow'
-            },
-            // markersParams: []
+            }
         };    
     }
 
@@ -92,36 +86,7 @@ export default class ViewPlace extends React.Component {
     redirectToAllPlacesView() {
         this.context.router.transitionTo('allPlaces');
     }
-
-    // _updatePlace(shouldCheckForCurrenPlace) {
-    //     var _this = this;
-    //     var placeId = this.context.router.getCurrentParams().placeId;
-
-    //     if (shouldCheckForCurrenPlace && this._currentPlaceId === placeId) {
-    //         return;
-    //     }
-
-    //     this._currentPlaceId = placeId;
-
-
-    //     // this.props.getPlace(placeId).then(function (place) {
-
-    //     //     _this.setState({
-    //     //         place: place
-    //     //     });
-
-    //     //     _this.props.updateMarkersParamsFromPlaces([place], {
-    //     //         click: function (e, place) {
-    //     //             _this.context.router.transitionTo('viewPlace', { placeId: place._id });
-    //     //         }                
-    //     //     })
-
-    //     // });
-        
-    // }    
-
-
-
+ 
     render() {
 
         var place = this.state.place;
@@ -135,31 +100,13 @@ export default class ViewPlace extends React.Component {
                         <Link to="editPlace" params={{placeId: place._id}}>Edit</Link>
                         &nbsp;
                         <a href="#" onClick={this.handleDelete}>Delete</a>
-                        
 
                         <br/>
                         <br/>
                         <p>Address: {place.address}</p>
                         <p>Latitude: {place.latitude}</p>
                         <p>Longitude: {place.longitude}</p>
-
-                        {/*<p>Categories: 
-                            <span class="ui-select-match-item btn btn-default btn-xs" 
-                            data-ng-repeat="category in place.categories track by $index"
-
-                            style="margin-right: 5px;">
-                                category.title
-                            </span>
-                        </p>
-
-                        <GoogleMap mapCenterLat={place.latitude} 
-                                    mapCenterLng={place.longitude} 
-                                    zoom={8} 
-                                    map={this.props.map} 
-                                    markersParams={this.state.markersParams}>
-
-                        </GoogleMap>                        
-*/}
+                        
                         <div className="row">
                             <div class="input-field col s12">
                                 <button type="button" className="waves-effect waves-light btn" onClick={this.handleBackToAllPlaces}>Back to all places</button>
