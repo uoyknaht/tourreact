@@ -39,7 +39,7 @@ export default class ViewPlace extends React.Component {
     }
 
     shouldComponentUpdate(nextProps) {
-        if (nextProps.place && nextProps.place._id !== this.props.place._id) {
+        if (nextProps.place && (!this.props.place || nextProps.place._id !== this.props.place._id)) {
             return true;
         }
 
@@ -50,7 +50,7 @@ export default class ViewPlace extends React.Component {
 
         var place = this.props.place;
 
-        if (!place._id) {
+        if (!place) {
             return (
                 <div></div>
             );

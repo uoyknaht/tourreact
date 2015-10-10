@@ -34,7 +34,7 @@ export default class Home extends React.Component {
 
         this.state = {
             places: [],
-            activePlace: {},
+            activePlace: null,
             markers: [],
             filterText: '',
             map: {},
@@ -128,7 +128,6 @@ export default class Home extends React.Component {
         PlaceActions.getAllPlaces();
 
         var placeId = this.props.params.placeId;
-        console.log(this.props.params);
 
         if (!placeId) {
             this._activePlaceId = null;
@@ -153,6 +152,11 @@ export default class Home extends React.Component {
 
         if (!placeId) {
             this._activePlaceId = null;
+
+            this.setState({ 
+                activePlace: null
+            });
+
         } else if (placeId && placeId !== this._activePlaceId) {
             this._activePlaceId = placeId;
             PlaceActions.getPlace(placeId);
@@ -162,7 +166,7 @@ export default class Home extends React.Component {
     _onChange() {
         var _this = this;
         var places = PlaceStore.getAllPlaces();
-        var activePlace = {};
+        var activePlace = null;
 
         if (this._activePlaceId) {
             activePlace = PlaceStore.getPlace(this._activePlaceId);

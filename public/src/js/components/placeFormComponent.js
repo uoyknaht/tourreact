@@ -11,22 +11,44 @@ export default class PlaceForm extends React.Component {
     constructor(props, context) {
         super(props);
         this.context = context;
+        this._updateForm = this._updateForm.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
+        this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleSetAdressFromCoordinates = this.handleSetAdressFromCoordinates.bind(this);
         this.render = this.render.bind(this);
-
-        this.state = {
-            place: {},
-            markersParams: [] 
-        };   
-
-        this.isEditAction = false;  
     }
 
+    _updateForm() {
+        console.log(this.props.place)
+        if (this.props.place) {
+            var place = this.props.place;
+
+            React.findDOMNode(this.refs.title).value = place.title;
+            React.findDOMNode(this.refs.address).value = place.address;
+            React.findDOMNode(this.refs.latitude).value = place.latitude;
+            React.findDOMNode(this.refs.longitude).value = place.longitude;
+        } else {
+            React.findDOMNode(this.refs.title).value = '';
+            React.findDOMNode(this.refs.address).value = '';
+            React.findDOMNode(this.refs.latitude).value = '';
+            React.findDOMNode(this.refs.longitude).value = '';     
+        }
+    }    
+
     componentDidMount() {
+        this._updateForm();
+    }
+
+    componentWillReceiveProps(newProps) {
+        this._updateForm();
+    }
+
+
+
+
         // var _this = this;
         // var placeId = this.context.router.getCurrentParams().placeId;
 
@@ -34,7 +56,7 @@ export default class PlaceForm extends React.Component {
         //     return;
         // }
 
-        // this.isEditAction = true;
+        // this._isEditAction = true;
 
         // this.getPlace(placeId, function (place) {
         //     _this.setState({
@@ -68,7 +90,7 @@ export default class PlaceForm extends React.Component {
         
 
 
-    }    
+     
 
     handleChange(e, a) {
         console.log(e.target.value);
@@ -76,18 +98,7 @@ export default class PlaceForm extends React.Component {
         //this.setState({ place: e.target.place});
     }
  
-    getPlace(placeId, callback) {
-        $.ajax({
-            method: 'GET',
-            url: 'api/places/' + placeId,
-            success: function(place) {
-                callback(place);
-            }.bind(this),
-            error: function(xhr, status, err) {
-                console.error('errrrrrrrrrr');
-            }.bind(this)
-        });
-    }   
+
 
     // savePlace(data, callback) {
 
@@ -96,7 +107,7 @@ export default class PlaceForm extends React.Component {
     //     var savePlaceUrl = 'api/places';
     //     var methodType = 'POST';
         
-    //     if (this.isEditAction) {
+    //     if (this._isEditAction) {
     //         savePlaceUrl = savePlaceUrl + '/' + this.state.place._id;
     //         methodType = 'PUT';
     //     }
@@ -117,7 +128,6 @@ export default class PlaceForm extends React.Component {
     handleSetAdressFromCoordinates(e) {
         e.preventDefault();
 
-        var place = this.state.place;
         var latlng = new google.maps.LatLng(place.latitude, place.longitude);
         var geocoder = new google.maps.Geocoder();
 
@@ -127,8 +137,8 @@ export default class PlaceForm extends React.Component {
                 if (status === google.maps.GeocoderStatus.OK) {
                     if (results && results[0]) {
                         var address = results[0].formatted_address;
-                        place.address = address;
-                        this.setState({place: place});
+                        // place.address = address;
+                        // this.setState({place: place});
                         React.findDOMNode(this.refs.address).value = address;
                     } else {
                         console.log('No results found');
@@ -152,16 +162,16 @@ export default class PlaceForm extends React.Component {
             categories: []
         }
 
-        if (this.isEditAction) {
-            data._id = this.state.place._id;
+        if (this.props.place) {
+            data._id = this.props.place._id;
         }
 
         PlaceActions.savePlace(data);
 
         // this.savePlace(data, function (place) {
-        //     _this.props.onPlaceSubmit(data, _this.isEditAction);
+        //     _this.props.onPlaceSubmit(data, _this._isEditAction);
 
-        //     if (!this.isEditAction) {
+        //     if (!this._isEditAction) {
         //         React.findDOMNode(this.refs.title).value = '';
         //         React.findDOMNode(this.refs.address).value = '';
         //         React.findDOMNode(this.refs.latitude).value = '';
@@ -181,8 +191,7 @@ export default class PlaceForm extends React.Component {
 
     render() {
 
-        var title = this.isEditAction ?'Edit place' : 'Add new place';
-        var place = this.state.place;
+        var title = this.props.place ?'Edit place' : 'Add new place';
 
         return (
             <div className="dynamic-menu">
@@ -206,18 +215,6 @@ export default class PlaceForm extends React.Component {
                             </div>
                             <div class="col s12">
                                 <button type="button" onClick={this.handleSetAdressFromCoordinates}>Set address from coordinates</button>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div class="col s12">
-{/*                                    <GoogleMap mapCenterLat={place.latitude} 
-                                                mapCenterLng={place.longitude} 
-                                                zoom={8} 
-                                                map={this.props.map} 
-                                                markersParams={this.state.markersParams}>
-
-                                    </GoogleMap>
-*/}
                             </div>
                         </div>
                         <div className="row">
