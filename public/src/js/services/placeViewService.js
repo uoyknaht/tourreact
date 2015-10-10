@@ -1,7 +1,7 @@
 
 export default class PlaceViewService {
 
-    getPlace(places, placeId) {
+    getPlace(placeId, places) {
 
         for (var i = places.length - 1; i >= 0; i--) {
             var place = places[i];
@@ -9,7 +9,9 @@ export default class PlaceViewService {
             if (place._id === placeId) {
                 return place;
             }
-        };
+        }
+
+        return null;
     }
 
     remove(places, placeId) {

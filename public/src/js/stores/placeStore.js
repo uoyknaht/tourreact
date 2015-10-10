@@ -2,10 +2,30 @@ import $ from 'jQuery';
 import Dispather from '../dispatcher/appDispatcher';
 import ActionTypesConstants from '../constants/ActionTypesConstants';
 import { EventEmitter } from 'events';
+import PlaceViewService from '../services/placeViewService';
 
 var CHANGE_EVENT = 'change';
 
 var places = [];
+var isAllPlacesLoaded = false;
+
+var whenAllPlacesAreLoaded = function () {
+
+    var promise = new Promise(function(resolve, reject) {
+        if (isAllPlacesLoaded) {
+            resolve();
+        } else {
+            var interval = setInterval(function() {
+                if (isAllPlacesLoaded) {
+                    clearInterval(interval);
+                    resolve();
+                }
+            }, 100);
+        }
+    });
+
+    return promise;
+};
 
 var PlaceStore = Object.assign({}, EventEmitter.prototype, {
     addChangeListener: function (callback) {
@@ -20,8 +40,9 @@ var PlaceStore = Object.assign({}, EventEmitter.prototype, {
     getAllPlaces: function () {
         return places;
     },
-    getPlaceById: function (id) {
-        //_.find(places, {_id: id});
+    getPlace: function (placeId) {
+        var placeViewService = new PlaceViewService();
+        return placeViewService.getPlace(placeId, places);
     }
 });
 
@@ -37,6 +58,7 @@ Dispather.register(function (action) {
                 cache: false,
                 success: function(data) {
                     places = data;
+                    isAllPlacesLoaded = true;
                     PlaceStore.emitChange();
                 },
                 error: function(xhr, status, err) {
@@ -45,6 +67,36 @@ Dispather.register(function (action) {
             });
 
             break;
+
+        case ActionTypesConstants.GET_PLACE:
+
+            whenAllPlacesAreLoaded().then(function () {
+
+                var placeId = action.data;
+                var placeViewService = new PlaceViewService();
+                var place = placeViewService.getPlace(placeId, places);
+
+                if (place) {
+                    PlaceStore.emitChange();
+                    return;
+                }
+
+                $.ajax({
+                    method: 'GET',
+                    url: 'api/places/' + placeId,
+                    success: function(place) {
+                        places.push(place);
+
+                        PlaceStore.emitChange();
+                    }.bind(this),
+                    error: function(xhr, status, err) {
+                        console.error('errrrrrrrrrr');
+                    }
+                });                
+
+            });
+
+            break;            
 
         case ActionTypesConstants.CREATE_PLACE:
         case ActionTypesConstants.EDIT_PLACE:

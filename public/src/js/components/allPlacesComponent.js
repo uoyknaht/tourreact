@@ -11,7 +11,8 @@ export default class AllPlaces extends React.Component {
     }
 
     componentDidUpdate() {
-        console.log('aaa');
+
+
     }
 
     render() {

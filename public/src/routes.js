@@ -7,8 +7,6 @@ import PlaceForm from './js/components/placeFormComponent';
 import ViewPlace from './js/components/viewPlaceComponent';
 import NotFoundPage from './js/components/NotFoundPage';
 
-console.log(NotFoundPage);
-
 var routes = (  
     <Route name="home" path="/" handler={Home}>
 

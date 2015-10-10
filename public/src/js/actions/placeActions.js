@@ -9,6 +9,13 @@ var placeActions = {
         });
     }, 
 
+    getPlace: function (placeId) {
+        Dispather.dispatch({
+            actionType: ActionTypesConstants.GET_PLACE,
+            data: placeId
+        });
+    }, 
+
     savePlace: function (place) {
 
         var actionType = ActionTypesConstants[place._id ? EDIT_PLACE : CREATE_PLACE];

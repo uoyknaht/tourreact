@@ -2,12 +2,12 @@ import $ from 'jQuery';
 import React from 'react';
 import Router from 'react-router';  
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
-import mui from 'material-ui';
-let AppBar = mui.AppBar;
-let IconButton = mui.IconButton;
-let FlatButton = mui.FlatButton;
-let NavigationClose = mui.NavigationClose;
-let TextField = mui.TextField;
+// import mui from 'material-ui';
+// let AppBar = mui.AppBar;
+// let IconButton = mui.IconButton;
+// let FlatButton = mui.FlatButton;
+// let NavigationClose = mui.NavigationClose;
+// let TextField = mui.TextField;
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import PlaceViewService from '../services/placeViewService';
 import Map from './mapComponent';
@@ -16,7 +16,7 @@ import GoogleMap from './googleMapComponent/googleMapComponent';
 import PlaceActions from '../actions/placeActions';
 import PlaceStore from '../stores/placeStore';
 
-let ThemeManager = new mui.Styles.ThemeManager();
+// let ThemeManager = new mui.Styles.ThemeManager();
 
 export default class Home extends React.Component {
 
@@ -26,16 +26,12 @@ export default class Home extends React.Component {
         this.handleDeletePlace = this.handleDeletePlace.bind(this);
         this.handleUserInput = this.handleUserInput.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
-        // this.getPlace = this.getPlace.bind(this);
-        // this.getPlaces = this.getPlaces.bind(this);
-        this._whenAllPlacesAreLoaded = this._whenAllPlacesAreLoaded.bind(this);
         this._onChange = this._onChange.bind(this);
         this.render = this.render.bind(this);
 
-        this.isAllPlacesLoaded = false;
-
         this.state = {
             places: [],
+            activePlace: {},
             markers: [],
             filterText: '',
             map: {},
@@ -83,25 +79,6 @@ export default class Home extends React.Component {
         }
     }
 
-    // handlePlaceSubmit(place, isEditAction) {
-    //     var places = this.state.places;
-
-    //     if (!isEditAction) {
-    //         places.push(place);
-    //     } else {
-    //         places.every(function (_place, index) {
-    //             if (_place._id === place._id) {
-    //                 places[index] = place;
-    //                 return false;
-    //             }
-
-    //             return true;
-    //         });
-    //     }
-
-    //     this.setState({places: places});
-    // }
-
     handleDeletePlace(placeId, callback) {
 
         $.ajax({
@@ -126,20 +103,7 @@ export default class Home extends React.Component {
         });        
     }
 
-    _onChange() {
-        var _this = this;
-        var places = PlaceStore.getAllPlaces();
 
-        this.setState({ places: places });
-
-        this.updateMarkersParamsFromPlaces(places, {
-            click: function (e, place) {
-                _this.context.router.transitionTo('viewPlace', { placeId: place._id });
-            } 
-        });
-
-        this.isAllPlacesLoaded = true;        
-    }
 
     handleUserInput(filterText) {
         console.log(filterText);
@@ -149,11 +113,11 @@ export default class Home extends React.Component {
     }
 
     componentWillMount() {
-        PlaceStore.addChangeListener(this._onChange)
+        PlaceStore.addChangeListener(this._onChange);
     }
 
     componentWillUnmount() {
-        PlaceStore.removeChangeListener(this._onChange)
+        PlaceStore.removeChangeListener(this._onChange);
     }
 
     componentDidMount() {
@@ -171,68 +135,31 @@ export default class Home extends React.Component {
         this.setState({map: map});
     }
 
-    getChildContext() {
-        return {
-            muiTheme: ThemeManager.getCurrentTheme()
-            // muiTheme: this.themeManager.getCurrentTheme()
-        };
-    }
-
-    _whenAllPlacesAreLoaded() {
+    _onChange() {
         var _this = this;
+        var places = PlaceStore.getAllPlaces();
 
-        var promise = new Promise(function(resolve, reject) {
-            if (_this.isAllPlacesLoaded) {
-                resolve();
-            } else {
-                var interval = setInterval(function() {
-                    if (_this.isAllPlacesLoaded) {
-                        clearInterval(interval);
-                        resolve();
-                    }
-                }, 100);
-            }
-        });
+        this.setState({ places: places });
 
-        return promise;
-    }
+        this.updateMarkersParamsFromPlaces(places, {
+            click: function (e, place) {
+                _this.context.router.transitionTo('viewPlace', { placeId: place._id });
+            } 
+        });     
+    }    
 
-    // getPlace(placeId) {
-    //     var _this = this;
-
-    //     var promise = new Promise(function (resolve, reject) {
-    //         _this._whenAllPlacesAreLoaded().then(function() {
-    //            var placeViewService = new PlaceViewService();
-    //            var place = placeViewService.getPlace(_this.state.places, placeId);            
-    //            resolve(place);
-    //        });           
-
-    //     }) ;
-
-    //     return promise;
-    // }    
-
-    // getPlaces() {
-    //     var _this = this;
-
-    //     var promise = new Promise(function (resolve, reject) {
-    //         _this._whenAllPlacesAreLoaded().then(function() {
-    //            resolve(_this.state.places);
-    //        });           
-
-    //     });
-
-    //     return promise;
-    // }    
+    // getChildContext() {
+    //     return {
+    //         muiTheme: ThemeManager.getCurrentTheme()
+    //         // muiTheme: this.themeManager.getCurrentTheme()
+    //     };
+    // }
 
     render() {
         return (
             <div>
 
-                <AppBar
-                  title="TourReact"
-                  iconElementLeft={<IconButton></IconButton>}
-                  iconElementRight={<FlatButton label="Save" />} />
+
 
                 <div class="header">
                     <Link to="home">Home</Link>
@@ -241,6 +168,13 @@ export default class Home extends React.Component {
                 </div>
 
                 {/*
+
+                <AppBar
+                  title="TourReact"
+                  iconElementLeft={<IconButton></IconButton>}
+                  iconElementRight={<FlatButton label="Save" />} />
+
+
                 <div className="row">
                     <form className="col s12">
                       <div className="row">
