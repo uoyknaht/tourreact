@@ -16,60 +16,11 @@ export default class ViewPlace extends React.Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.handleBackToAllPlaces = this.handleBackToAllPlaces.bind(this);
         this.redirectToAllPlaces = this.redirectToAllPlacesView.bind(this);
-        this.componentWillMount = this.componentWillMount.bind(this);
-        this.componentWillUnount = this.componentWillUnmount.bind(this);
-        this.componentDidMount = this.componentDidMount.bind(this);
-        this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
-        this._onChange = this._onChange.bind(this);
-
-        this.state = {
-            place: {
-                _id: 'somethingForNow'
-            }
-        };    
+        this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this); 
     }
-
-    componentWillMount() {
-        PlaceStore.addChangeListener(this._onChange);
-    }
-
-    componentWillUnmount() {
-        PlaceStore.removeChangeListener(this._onChange);
-    }
-
-    componentDidMount() {
-        var placeId = this.context.router.getCurrentParams().placeId;
-
-        PlaceActions.getPlace(placeId);
-    }
-
-    componentWillReceiveProps(newProps) {
-        var placeId = newProps.params.placeId;
-
-        if (placeId === this.state.place._id) {
-            return;
-        }
-
-        PlaceActions.getPlace(placeId);
-    }
-
-    _onChange() {
-        var placeId = this.context.router.getCurrentParams().placeId;
-        var place = PlaceStore.getPlace(placeId);
-
-        this.setState({ place: place });
-
-        // this.updateMarkersParamsFromPlaces(places, {
-        //     click: function (e, place) {
-        //         _this.context.router.transitionTo('viewPlace', { placeId: place._id });
-        //     } 
-        // });
-    }    
-
- 
 
     handleDelete() {
-        var placeId = this.state.place._id;
+        // var placeId = this.state.place._id;
 
         // this.props.onPlaceDelete(placeId, () => {
         //     this.redirectToAllPlacesView();
@@ -86,13 +37,27 @@ export default class ViewPlace extends React.Component {
     redirectToAllPlacesView() {
         this.context.router.transitionTo('allPlaces');
     }
+
+    shouldComponentUpdate(nextProps) {
+        if (nextProps.place && nextProps.place._id !== this.props.place._id) {
+            return true;
+        }
+
+        return false;
+    }
  
     render() {
 
-        var place = this.state.place;
+        var place = this.props.place;
+
+        if (!place._id) {
+            return (
+                <div></div>
+            );
+        }
 
         return (
-            <div className="dynamic-menu" key={place}>
+            <div className="dynamic-menu" key={place._id}>
                 <div className="row">
                     <div className="col12">
                         <h2>{place.title}</h2>
@@ -106,7 +71,7 @@ export default class ViewPlace extends React.Component {
                         <p>Address: {place.address}</p>
                         <p>Latitude: {place.latitude}</p>
                         <p>Longitude: {place.longitude}</p>
-                        
+
                         <div className="row">
                             <div class="input-field col s12">
                                 <button type="button" className="waves-effect waves-light btn" onClick={this.handleBackToAllPlaces}>Back to all places</button>

@@ -26,8 +26,11 @@ export default class Home extends React.Component {
         this.handleDeletePlace = this.handleDeletePlace.bind(this);
         this.handleUserInput = this.handleUserInput.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
+        this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
         this._onChange = this._onChange.bind(this);
         this.render = this.render.bind(this);
+
+        this._activePlaceId = null;
 
         this.state = {
             places: [],
@@ -124,6 +127,16 @@ export default class Home extends React.Component {
 
         PlaceActions.getAllPlaces();
 
+        var placeId = this.props.params.placeId;
+        console.log(this.props.params);
+
+        if (!placeId) {
+            this._activePlaceId = null;
+        } else if (placeId && placeId !== this._activePlaceId) {
+            this._activePlaceId = placeId;
+            PlaceActions.getPlace(placeId);
+        }          
+
         var map = new google.maps.Map(
             document.getElementById('google-map'), 
             {
@@ -135,11 +148,30 @@ export default class Home extends React.Component {
         this.setState({map: map});
     }
 
+    componentWillReceiveProps(newProps) {
+        var placeId = newProps.params.placeId;
+
+        if (!placeId) {
+            this._activePlaceId = null;
+        } else if (placeId && placeId !== this._activePlaceId) {
+            this._activePlaceId = placeId;
+            PlaceActions.getPlace(placeId);
+        }   
+    }    
+
     _onChange() {
         var _this = this;
         var places = PlaceStore.getAllPlaces();
+        var activePlace = {};
 
-        this.setState({ places: places });
+        if (this._activePlaceId) {
+            activePlace = PlaceStore.getPlace(this._activePlaceId);
+        }
+
+        this.setState({ 
+            places: places,
+            activePlace: activePlace
+        });
 
         this.updateMarkersParamsFromPlaces(places, {
             click: function (e, place) {
@@ -194,7 +226,8 @@ export default class Home extends React.Component {
                         <RouteHandler places={this.state.places} 
                                         filterText={this.state.filterText} 
                                         onUserInput={this.handleUserInput}
-                                        map={this.state.map} />
+                                        map={this.state.map}
+                                        activePlace={this.state.activePlace} />
                     </div>
                     <div className="col s12 m6">
 

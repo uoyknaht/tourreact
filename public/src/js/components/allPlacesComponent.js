@@ -42,7 +42,7 @@ export default class AllPlaces extends React.Component {
                 <hr/>
                 <br/>
 
-                <RouteHandler map={this.props.map} />
+                <RouteHandler map={this.props.map} place={this.props.activePlace} />
 
             </div>
         );
