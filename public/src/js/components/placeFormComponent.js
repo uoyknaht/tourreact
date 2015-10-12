@@ -21,11 +21,8 @@ export default class PlaceForm extends React.Component {
         this.render = this.render.bind(this);
     }
 
-    _updateForm() {
-        console.log(this.props.place)
-        if (this.props.place) {
-            var place = this.props.place;
-
+    _updateForm(place) {
+        if (place) {
             React.findDOMNode(this.refs.title).value = place.title;
             React.findDOMNode(this.refs.address).value = place.address;
             React.findDOMNode(this.refs.latitude).value = place.latitude;
@@ -39,11 +36,11 @@ export default class PlaceForm extends React.Component {
     }    
 
     componentDidMount() {
-        this._updateForm();
+        this._updateForm(this.props.place);
     }
 
     componentWillReceiveProps(newProps) {
-        this._updateForm();
+        this._updateForm(newProps.place);
     }
 
 

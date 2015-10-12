@@ -27,6 +27,7 @@ export default class Home extends React.Component {
         this.handleUserInput = this.handleUserInput.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
+        this._updateActivePlace = this._updateActivePlace.bind(this);
         this._onChange = this._onChange.bind(this);
         this.render = this.render.bind(this);
 
@@ -127,14 +128,7 @@ export default class Home extends React.Component {
 
         PlaceActions.getAllPlaces();
 
-        var placeId = this.props.params.placeId;
-
-        if (!placeId) {
-            this._activePlaceId = null;
-        } else if (placeId && placeId !== this._activePlaceId) {
-            this._activePlaceId = placeId;
-            PlaceActions.getPlace(placeId);
-        }          
+        this._updateActivePlace(this.props.params.placeId);
 
         var map = new google.maps.Map(
             document.getElementById('google-map'), 
@@ -148,20 +142,23 @@ export default class Home extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        var placeId = newProps.params.placeId;
+        this._updateActivePlace(newProps.params.placeId);
+    }    
 
-        if (!placeId) {
+    _updateActivePlace(routePlaceId) {
+
+        if (!routePlaceId) {
             this._activePlaceId = null;
 
             this.setState({ 
                 activePlace: null
             });
 
-        } else if (placeId && placeId !== this._activePlaceId) {
-            this._activePlaceId = placeId;
-            PlaceActions.getPlace(placeId);
-        }   
-    }    
+        } else if (routePlaceId && routePlaceId !== this._activePlaceId) {
+            this._activePlaceId = routePlaceId;
+            PlaceActions.getPlace(routePlaceId);
+        } 
+    }
 
     _onChange() {
         var _this = this;
