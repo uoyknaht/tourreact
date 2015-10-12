@@ -43,52 +43,6 @@ export default class PlaceForm extends React.Component {
         this._updateForm(newProps.place);
     }
 
-
-
-
-        // var _this = this;
-        // var placeId = this.context.router.getCurrentParams().placeId;
-
-        // if (!placeId) {
-        //     return;
-        // }
-
-        // this._isEditAction = true;
-
-        // this.getPlace(placeId, function (place) {
-        //     _this.setState({
-        //         place: place,
-        //     });
-
-        //     React.findDOMNode(_this.refs.title).value = place.title;
-        //     React.findDOMNode(_this.refs.address).value = place.address;
-        //     React.findDOMNode(_this.refs.latitude).value = place.latitude;
-        //     React.findDOMNode(_this.refs.longitude).value = place.longitude;
-
-
-        //     _this.props.updateMarkersParamsFromPlaces([place], {
-        //         dragend: function (e, place) {
-        //             React.findDOMNode(_this.refs.latitude).value = e.latLng.lat();
-        //             React.findDOMNode(_this.refs.longitude).value = e.latLng.lng();
-        //             place.latitude = e.latLng.lat();
-        //             place.longitude = e.latLng.lng();
-
-        //             var markersParams = _this.state.markersParams;
-        //             markersParams[0].position.lat = e.latLng.lat();
-        //             markersParams[0].position.lng = e.latLng.lng();
-
-        //             _this.setState({
-        //                 place: place,
-        //                 markersParams: markersParams
-        //             });
-        //         }                
-        //     })
-        // });            
-        
-
-
-     
-
     handleChange(e, a) {
         console.log(e.target.value);
         console.log(a);
@@ -165,6 +119,20 @@ export default class PlaceForm extends React.Component {
 
         PlaceActions.savePlace(data);
 
+
+        if (!this.props.place) {
+
+            // TODO: redirect back to place form if saving of place in server fails
+            this.context.router.transitionTo('viewPlace', { placeId: this.props.place._id });
+
+        } else {
+            alert('place updated');
+            // React.findDOMNode(this.refs.title).value = '';
+            // React.findDOMNode(this.refs.address).value = '';
+            // React.findDOMNode(this.refs.latitude).value = '';
+            // React.findDOMNode(this.refs.longitude).value = '';            
+        }
+
         // this.savePlace(data, function (place) {
         //     _this.props.onPlaceSubmit(data, _this._isEditAction);
 
@@ -174,7 +142,7 @@ export default class PlaceForm extends React.Component {
         //         React.findDOMNode(this.refs.latitude).value = '';
         //         React.findDOMNode(this.refs.longitude).value = '';
 
-        //         this.context.router.transitionTo('viewPlace', { placeId: place._id });
+        //         
         //     }
 
         // }.bind(this));

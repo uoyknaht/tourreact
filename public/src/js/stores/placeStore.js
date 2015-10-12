@@ -118,7 +118,7 @@ Dispather.register(function (action) {
                 url: savePlaceUrl,
                 success: function(addedOrEditedPlace) {
 
-                    if (this.isEditAction) {
+                    if (isEditAction) {
 
                         places.every(function (_place, index) {
                             if (_place._id === addedOrEditedPlace._id) {
@@ -133,8 +133,6 @@ Dispather.register(function (action) {
                     }                
 
                     PlaceStore.emitChange();
-
-
                 },
                 error: function(xhr, status, err) {
                     console.error(savePlaceUrl, status, err.toString());

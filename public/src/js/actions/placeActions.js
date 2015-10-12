@@ -18,7 +18,7 @@ var placeActions = {
 
     savePlace: function (place) {
 
-        var actionType = ActionTypesConstants[place._id ? EDIT_PLACE : CREATE_PLACE];
+        var actionType = ActionTypesConstants[place._id ? ActionTypesConstants.EDIT_PLACE : ActionTypesConstants.CREATE_PLACE];
 
         Dispather.dispatch({
             actionType: actionType,
