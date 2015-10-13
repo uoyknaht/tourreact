@@ -1,22 +1,22 @@
 import Dispather from '../dispatcher/appDispatcher';
 import ActionTypesConstants from '../constants/ActionTypesConstants';
+import Api from '../api';
 
-var placeActions = {
+export default {
 
-    getAllPlaces: function () {
-        Dispather.dispatch({
-            actionType: ActionTypesConstants.GET_ALL_PLACES
-        });
-    }, 
+    getAllPlaces() {
+        Api.getAllPlaces();
+    },
 
-    getPlace: function (placeId) {
-        Dispather.dispatch({
-            actionType: ActionTypesConstants.GET_PLACE,
-            data: placeId
-        });
-    }, 
+    getPlace(placeId) {
+        Api.getAllPlaces(placeId);
+        // Dispather.dispatch({
+        //     actionType: ActionTypesConstants.GET_PLACE,
+        //     data: placeId
+        // });
+    },
 
-    savePlace: function (place) {
+    savePlace(place) {
 
         var actionType = ActionTypesConstants[place._id ? ActionTypesConstants.EDIT_PLACE : ActionTypesConstants.CREATE_PLACE];
 
@@ -25,6 +25,4 @@ var placeActions = {
             data: place
         });
     }
-};
-
-export default placeActions;
+}
