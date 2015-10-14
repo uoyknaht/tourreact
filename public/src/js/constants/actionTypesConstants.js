@@ -6,7 +6,9 @@ var constants = keyMirror({
     GET_PLACE: null,
     RECEIVED_PLACE: null,
     CREATE_PLACE: null,
-    EDIT_PLACE: null
+    CREATED_PLACE: null,
+    EDIT_PLACE: null,
+    UPDATED_PLACE: null
 });
 
 export default constants;

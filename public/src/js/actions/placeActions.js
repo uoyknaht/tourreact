@@ -17,12 +17,6 @@ export default {
     },
 
     savePlace(place) {
-
-        var actionType = ActionTypesConstants[place._id ? ActionTypesConstants.EDIT_PLACE : ActionTypesConstants.CREATE_PLACE];
-
-        Dispather.dispatch({
-            actionType: actionType,
-            data: place
-        });
+        Api.savePlace(place);
     }
 }

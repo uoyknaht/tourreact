@@ -19,6 +19,14 @@ export default class ViewPlace extends React.Component {
         this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this); 
     }
 
+    shouldComponentUpdate(nextProps) {
+        if (nextProps.place && (!this.props.place || nextProps.place._id !== this.props.place._id)) {
+            return true;
+        }
+
+        return false;
+    }    
+
     handleDelete() {
         // var placeId = this.state.place._id;
 
@@ -38,13 +46,7 @@ export default class ViewPlace extends React.Component {
         this.context.router.transitionTo('allPlaces');
     }
 
-    shouldComponentUpdate(nextProps) {
-        if (nextProps.place && (!this.props.place || nextProps.place._id !== this.props.place._id)) {
-            return true;
-        }
 
-        return false;
-    }
  
     render() {
 

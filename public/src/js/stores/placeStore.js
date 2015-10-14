@@ -136,46 +136,29 @@ Dispather.register(action => {
 
             break;            
 
-        case ActionTypesConstants.CREATE_PLACE:
-        case ActionTypesConstants.EDIT_PLACE:
-
-            var isEditAction = action.actionType === ActionTypesConstants.EDIT_PLACE;
-            var place = action.data;
+        case ActionTypesConstants.CREATED_PLACE:
             
-            var savePlaceUrl = 'api/places';
-            var methodType = 'POST';
+            var place = action.place;
+            places.push(place);
 
-            if (isEditAction) {
-                savePlaceUrl = savePlaceUrl + '/' + place._id;
-                methodType = 'PUT';                
-            }
+            PlaceStore.emitChange();
 
-            $.ajax({
-                method: methodType,
-                data: place,
-                url: savePlaceUrl,
-                success: function(addedOrEditedPlace) {
+            break;
 
-                    if (isEditAction) {
+        case ActionTypesConstants.UPDATED_PLACE:
 
-                        places.every(function (_place, index) {
-                            if (_place._id === addedOrEditedPlace._id) {
-                                places[index] = addedOrEditedPlace;
-                                return false;
-                            }
+            var place = action.place;
 
-                            return true;
-                        });
-                    } else {
-                        places.push(addedOrEditedPlace);
-                    }                
-
-                    PlaceStore.emitChange();
-                },
-                error: function(xhr, status, err) {
-                    console.error(savePlaceUrl, status, err.toString());
+            places.every(function (_place, index) {
+                if (_place._id === place._id) {
+                    places[index] = place;
+                    return false;
                 }
+
+                return true;
             });
+
+            PlaceStore.emitChange();
 
             break;
 

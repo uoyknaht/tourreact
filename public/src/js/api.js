@@ -51,5 +51,50 @@ export default {
             }
         }); 
 
+    },
+
+    savePlace(place) {
+
+        var savePlaceUrl = 'api/places';
+        var methodType = 'POST';
+
+        if (place._id) {
+            savePlaceUrl = savePlaceUrl + '/' + place._id;
+            methodType = 'PUT';                
+        }
+
+        $.ajax({
+            method: methodType,
+            data: place,
+            url: savePlaceUrl,
+            success: function(addedOrEditedPlace) {
+                if (place._id) {
+                    ServerActions.updatedPlace(place);    
+                } else {
+                    ServerActions.createdPlace(place);
+                }
+                
+
+                // if (place._id) {
+
+                //     places.every(function (_place, index) {
+                //         if (_place._id === addedOrEditedPlace._id) {
+                //             places[index] = addedOrEditedPlace;
+                //             return false;
+                //         }
+
+                //         return true;
+                //     });
+                // } else {
+                //     places.push(addedOrEditedPlace);
+                // }                
+
+                // PlaceStore.emitChange();
+            },
+            error: function(xhr, status, err) {
+                console.error(savePlaceUrl, status, err.toString());
+            }
+        });
+
     }
 }

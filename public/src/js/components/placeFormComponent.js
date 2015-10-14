@@ -21,6 +21,14 @@ export default class PlaceForm extends React.Component {
         this.render = this.render.bind(this);
     }
 
+    componentDidMount() {
+        this._updateForm(this.props.place);
+    }
+
+    componentWillReceiveProps(newProps) {
+        this._updateForm(newProps.place);
+    }    
+
     _updateForm(place) {
         if (place) {
             React.findDOMNode(this.refs.title).value = place.title;
@@ -35,13 +43,7 @@ export default class PlaceForm extends React.Component {
         }
     }    
 
-    componentDidMount() {
-        this._updateForm(this.props.place);
-    }
 
-    componentWillReceiveProps(newProps) {
-        this._updateForm(newProps.place);
-    }
 
     handleChange(e, a) {
         console.log(e.target.value);
@@ -49,32 +51,7 @@ export default class PlaceForm extends React.Component {
         //this.setState({ place: e.target.place});
     }
  
-
-
-    // savePlace(data, callback) {
-
-    //     PlaceActions.savePlace()
-
-    //     var savePlaceUrl = 'api/places';
-    //     var methodType = 'POST';
-        
-    //     if (this._isEditAction) {
-    //         savePlaceUrl = savePlaceUrl + '/' + this.state.place._id;
-    //         methodType = 'PUT';
-    //     }
-
-    //     $.ajax({
-    //         method: methodType,
-    //         data: data,
-    //         url: savePlaceUrl,
-    //         success: function(addedOrEditedPlace) {
-    //             callback(addedOrEditedPlace);
-    //         }.bind(this),
-    //         error: function(xhr, status, err) {
-    //             console.error(savePlaceUrl, status, err.toString());
-    //         }.bind(this)
-    //     });        
-    // }  
+ 
 
     handleSetAdressFromCoordinates(e) {
         e.preventDefault();
