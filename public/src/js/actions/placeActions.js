@@ -9,11 +9,7 @@ export default {
     },
 
     getPlace(placeId) {
-        Api.getAllPlaces(placeId);
-        // Dispather.dispatch({
-        //     actionType: ActionTypesConstants.GET_PLACE,
-        //     data: placeId
-        // });
+        Api.getPlace(placeId);
     },
 
     savePlace(place) {

@@ -20,6 +20,7 @@ export default class ViewPlace extends React.Component {
     }
 
     shouldComponentUpdate(nextProps) {
+        // return true;
         if (nextProps.place && (!this.props.place || nextProps.place._id !== this.props.place._id)) {
             return true;
         }
@@ -46,8 +47,6 @@ export default class ViewPlace extends React.Component {
         this.context.router.transitionTo('allPlaces');
     }
 
-
- 
     render() {
 
         var place = this.props.place;

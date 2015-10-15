@@ -19,7 +19,7 @@ export default class AllPlaces extends React.Component {
         var places = [];
 
         this.props.places.forEach(function (place) {
-            if (place.title.indexOf(this.props.filterText) !== -1) {
+            if (place._id && place.title.indexOf(this.props.filterText) !== -1) {
                 places.push(
                     <li className="collection-item avatar"  key={place._id}>
                         <img src="src/img/alert-info.png" className="circle" />

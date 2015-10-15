@@ -50,6 +50,77 @@ export default class Home extends React.Component {
         //this.themeManager = new ThemeManager();
     }
 
+    componentWillMount() {
+        PlaceStore.addChangeListener(this._onChange);
+    }
+
+    componentWillUnmount() {
+        PlaceStore.removeChangeListener(this._onChange);
+    }
+
+    componentDidMount() {
+        console.log(777);
+        PlaceActions.getAllPlaces();
+
+        this._updateActivePlace(this.props.params.placeId);
+
+        var map = new google.maps.Map(
+            document.getElementById('google-map'), 
+            {
+                center: new google.maps.LatLng(54, 24),
+                zoom: 8
+            }
+        );
+
+        this.setState({map: map});
+    }
+
+    componentWillReceiveProps(newProps) {
+        this._updateActivePlace(newProps.params.placeId);
+    }    
+
+    _updateActivePlace(routePlaceId) {
+
+        if (!routePlaceId) {
+            this._activePlaceId = null;
+
+            this.setState({ 
+                activePlace: null
+            });
+
+        } else if (routePlaceId && routePlaceId !== this._activePlaceId) {
+            console.log(999);
+            this._activePlaceId = routePlaceId;
+            //PlaceStore.getPlace(routePlaceId);
+            PlaceActions.getPlace(routePlaceId);
+        } 
+    }
+
+    _onChange() {
+        var _this = this;
+        var places = PlaceStore.getAllPlaces();
+        var activePlace = null;
+
+        if (this._activePlaceId) {
+            activePlace = PlaceStore.getPlace(this._activePlaceId);
+        }
+
+        this.setState({ 
+            places: places,
+            activePlace: activePlace
+        });
+
+        this.updateMarkersParamsFromPlaces(places, {
+            click: function (e, place) {
+               // _this.context.router.transitionTo('viewPlace', { placeId: place._id });
+            } 
+        });     
+    }  
+
+
+
+
+
     updateMarkersParamsFromPlaces(places, callbacks) {
         var markersParams = [];
         var _this = this;
@@ -116,70 +187,7 @@ export default class Home extends React.Component {
         });
     }
 
-    componentWillMount() {
-        PlaceStore.addChangeListener(this._onChange);
-    }
-
-    componentWillUnmount() {
-        PlaceStore.removeChangeListener(this._onChange);
-    }
-
-    componentDidMount() {
-
-        PlaceActions.getAllPlaces();
-
-        this._updateActivePlace(this.props.params.placeId);
-
-        var map = new google.maps.Map(
-            document.getElementById('google-map'), 
-            {
-                center: new google.maps.LatLng(54, 24),
-                zoom: 8
-            }
-        );
-
-        this.setState({map: map});
-    }
-
-    componentWillReceiveProps(newProps) {
-        this._updateActivePlace(newProps.params.placeId);
-    }    
-
-    _updateActivePlace(routePlaceId) {
-
-        if (!routePlaceId) {
-            this._activePlaceId = null;
-
-            this.setState({ 
-                activePlace: null
-            });
-
-        } else if (routePlaceId && routePlaceId !== this._activePlaceId) {
-            this._activePlaceId = routePlaceId;
-            PlaceActions.getPlace(routePlaceId);
-        } 
-    }
-
-    _onChange() {
-        var _this = this;
-        var places = PlaceStore.getAllPlaces();
-        var activePlace = null;
-
-        if (this._activePlaceId) {
-            activePlace = PlaceStore.getPlace(this._activePlaceId);
-        }
-
-        this.setState({ 
-            places: places,
-            activePlace: activePlace
-        });
-
-        this.updateMarkersParamsFromPlaces(places, {
-            click: function (e, place) {
-                _this.context.router.transitionTo('viewPlace', { placeId: place._id });
-            } 
-        });     
-    }    
+  
 
     // getChildContext() {
     //     return {

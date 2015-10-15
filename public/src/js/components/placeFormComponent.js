@@ -5,6 +5,7 @@ import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 
 import GoogleMap from './googleMapComponent/googleMapComponent';
 import PlaceActions from '../actions/placeActions';
+import PlaceStore from '../stores/placeStore';
 
 export default class PlaceForm extends React.Component {
 
@@ -13,20 +14,62 @@ export default class PlaceForm extends React.Component {
         this.context = context;
         this._updateForm = this._updateForm.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
+        this.componentWillMount = this.componentWillMount.bind(this);
+        this.componentWillUnmount = this.componentWillUnmount.bind(this);
         this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this._onChange = this._onChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleSetAdressFromCoordinates = this.handleSetAdressFromCoordinates.bind(this);
         this.render = this.render.bind(this);
+
+        this.isFormOfTypeCreate = null;
+        this.isComponentOpeneded = false;
     }
+
+    componentWillMount() {
+        PlaceStore.addChangeListener(this._onChange);
+        this.isComponentOpeneded = true;
+    }
+
+    componentWillUnmount() {
+        PlaceStore.removeChangeListener(this._onChange);
+        this.isComponentOpeneded = false;
+    }    
+
+    _onChange() {
+    //     var _this = this;
+    //     var places = PlaceStore.getAllPlaces();
+    //     var activePlace = null;
+
+    //     if (this._activePlaceId) {
+    //         activePlace = PlaceStore.getPlace(this._activePlaceId);
+    //     }
+
+    //     this.setState({ 
+    //         places: places,
+    //         activePlace: activePlace
+    //     });   
+    }  
+
+
+
 
     componentDidMount() {
         this._updateForm(this.props.place);
+        this.isFormOfTypeCreate = this.props.place ? false : true;
     }
 
     componentWillReceiveProps(newProps) {
-        this._updateForm(newProps.place);
+        var newIsFormTypeOfCreate = newProps.place ? false : true;
+
+        // if place was created and form goes from add to edit state
+        if (this.isComponentOpeneded && this.isFormOfTypeCreate && !newIsFormTypeOfCreate) {
+            console.log('place added');
+            this.context.router.transitionTo('viewPlace', { placeId: this.props.place._id });
+        } else {
+            this._updateForm(newProps.place);
+        } 
     }    
 
     _updateForm(place) {
@@ -42,16 +85,6 @@ export default class PlaceForm extends React.Component {
             React.findDOMNode(this.refs.longitude).value = '';     
         }
     }    
-
-
-
-    handleChange(e, a) {
-        console.log(e.target.value);
-        console.log(a);
-        //this.setState({ place: e.target.place});
-    }
- 
- 
 
     handleSetAdressFromCoordinates(e) {
         e.preventDefault();
@@ -95,35 +128,6 @@ export default class PlaceForm extends React.Component {
         }
 
         PlaceActions.savePlace(data);
-
-
-        if (!this.props.place) {
-
-            // TODO: redirect back to place form if saving of place in server fails
-            this.context.router.transitionTo('viewPlace', { placeId: this.props.place._id });
-
-        } else {
-            alert('place updated');
-            // React.findDOMNode(this.refs.title).value = '';
-            // React.findDOMNode(this.refs.address).value = '';
-            // React.findDOMNode(this.refs.latitude).value = '';
-            // React.findDOMNode(this.refs.longitude).value = '';            
-        }
-
-        // this.savePlace(data, function (place) {
-        //     _this.props.onPlaceSubmit(data, _this._isEditAction);
-
-        //     if (!this._isEditAction) {
-        //         React.findDOMNode(this.refs.title).value = '';
-        //         React.findDOMNode(this.refs.address).value = '';
-        //         React.findDOMNode(this.refs.latitude).value = '';
-        //         React.findDOMNode(this.refs.longitude).value = '';
-
-        //         
-        //     }
-
-        // }.bind(this));
-
     }
 
     handleCancel(e) {
