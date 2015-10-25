@@ -23,7 +23,6 @@ export default class Home extends React.Component {
     constructor() {
         super();
         this.updateMarkersParamsFromPlaces = this.updateMarkersParamsFromPlaces.bind(this);
-        this.handleDeletePlace = this.handleDeletePlace.bind(this);
         this.handleUserInput = this.handleUserInput.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
@@ -153,32 +152,6 @@ export default class Home extends React.Component {
             this.state.mapCenterLng = places[0].longitude;
         }
     }
-
-    handleDeletePlace(placeId, callback) {
-
-        $.ajax({
-            method: 'DELETE',
-            url: 'api/places/' + placeId,
-            success: function() {
-
-                var places = this.state.places;
-
-                var placeViewService = new PlaceViewService();
-                placeViewService.remove(places, placeId);
-
-                this.setState({
-                    places: places
-                });
-
-                callback();
-            }.bind(this),
-            error: function(xhr, status, err) {
-                console.error('errrrrrrrrrr');
-            }.bind(this)
-        });        
-    }
-
-
 
     handleUserInput(filterText) {
         console.log(filterText);

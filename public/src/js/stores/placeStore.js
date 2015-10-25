@@ -93,6 +93,17 @@ Dispather.register(action => {
 
             break;
 
+        case ActionTypesConstants.DELETED_PLACE:
+
+            var placeId = action.placeId;
+
+            var placeViewService = new PlaceViewService();
+            placeViewService.remove(places, placeId);
+
+            PlaceStore.emitChange();
+
+            break;
+
         default:
             // nothing to do here
             

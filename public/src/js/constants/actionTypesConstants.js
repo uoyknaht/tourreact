@@ -8,7 +8,8 @@ var constants = keyMirror({
     CREATE_PLACE: null,
     CREATED_PLACE: null,
     EDIT_PLACE: null,
-    UPDATED_PLACE: null
+    UPDATED_PLACE: null,
+    DELETED_PLACE: null
 });
 
 export default constants;

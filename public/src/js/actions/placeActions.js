@@ -14,5 +14,9 @@ export default {
 
     savePlace(place) {
         Api.savePlace(place);
+    },
+
+    deletePlace(placeId) {
+        Api.deletePlace(placeId);
     }
 }

@@ -29,6 +29,13 @@ export default {
             actionType: ActionTypesConstants.UPDATED_PLACE,
             place
         });        
+    },
+
+    deletedPlace(placeId) {
+        Dispather.dispatch({
+            actionType: ActionTypesConstants.DELETED_PLACE,
+            placeId
+        });        
     }
 
 }

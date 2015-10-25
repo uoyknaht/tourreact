@@ -29,11 +29,9 @@ export default class ViewPlace extends React.Component {
     }    
 
     handleDelete() {
-        // var placeId = this.state.place._id;
-
-        // this.props.onPlaceDelete(placeId, () => {
-        //     this.redirectToAllPlacesView();
-        // });
+        var placeId = this.props.place._id;
+        PlaceActions.deletePlace(placeId);
+        this.redirectToAllPlacesView();
 
         return false;
     }

@@ -96,5 +96,19 @@ export default {
             }
         });
 
-    }
+    },
+
+    deletePlace(placeId) {
+
+        $.ajax({
+            method: 'DELETE',
+            url: 'api/places/' + placeId,
+            success: function() {
+                ServerActions.deletedPlace(placeId); 
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error('errrrrrrrrrr');
+            }.bind(this)
+        });        
+    },    
 }
