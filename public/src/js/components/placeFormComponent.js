@@ -61,15 +61,15 @@ export default class PlaceForm extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        var newIsFormTypeOfCreate = newProps.place ? false : true;
+        // var newIsFormTypeOfCreate = newProps.place ? false : true;
 
-        // if place was created and form goes from add to edit state
-        if (this.isComponentOpeneded && this.isFormOfTypeCreate && !newIsFormTypeOfCreate) {
-            console.log('place added');
-            this.context.router.transitionTo('viewPlace', { placeId: this.props.place._id });
-        } else {
-            this._updateForm(newProps.place);
-        } 
+        // // if place was created and form goes from add to edit state
+        // if (this.isComponentOpeneded && this.isFormOfTypeCreate && !newIsFormTypeOfCreate) {
+        //     console.log('place added');
+        //     this.context.router.transitionTo('viewPlace', { placeId: this.props.place._id });
+        // } else {
+        //     this._updateForm(newProps.place);
+        // } 
     }    
 
     _updateForm(place) {
@@ -128,6 +128,7 @@ export default class PlaceForm extends React.Component {
         }
 
         PlaceActions.savePlace(data);
+        this.context.router.transitionTo('allPlaces');
     }
 
     handleCancel(e) {

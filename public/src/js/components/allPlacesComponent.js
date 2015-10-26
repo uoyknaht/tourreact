@@ -2,7 +2,7 @@ import React from 'react';
 import Router from 'react-router';  
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import SearchBar from './searchBar';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+// import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 export default class AllPlaces extends React.Component {
 
@@ -31,9 +31,16 @@ export default class AllPlaces extends React.Component {
             <div>
                 <SearchBar filterText={this.props.filterText} onUserInput={this.props.onUserInput} />
 
+                {/*<ReactCSSTransitionGroup 
+                    transitionName="example" 
+                    transitionEnterTimeout={500} 
+                    transitionLeaveTimeout={300}
+                    component="ul"
+                    className="collection">*/}
                 <ul className="collection">
-                    {places}
+                 {places}
                 </ul>
+                {/*</ReactCSSTransitionGroup>*/}
                 <br/>
                 <hr/>
                 <br/>
